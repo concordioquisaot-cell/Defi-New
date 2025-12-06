@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 & DeFi Mastery: Level 1 - The Paradigm Shift</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Left Sidebar - Outline */
+        .sidebar {
+            width: 20%;
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .menu-toggle {
+            padding: 20px;
+            background: #0f172a;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: flex-end;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-toggle:hover {
+            background: #1e293b;
+        }
+
+        .menu-dots {
+            font-size: 24px;
+            color: #60a5fa;
+        }
+
+        .outline-title {
+            padding: 25px 20px 15px;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 10px;
+        }
+
+        .outline-title h2 {
+            font-size: 1.4rem;
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .outline-list {
+            list-style: none;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0 0 20px;
+        }
+
+        .outline-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .outline-item:hover {
+            background: rgba(30, 41, 59, 0.7);
+        }
+
+        .outline-item.active {
+            background: rgba(37, 99, 235, 0.2);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .outline-item i {
+            font-size: 1.2rem;
+            color: #60a5fa;
+            width: 24px;
+            text-align: center;
+        }
+
+        .outline-item span {
+            font-weight: 500;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar.collapsed .outline-title,
+        .sidebar.collapsed .outline-item span {
+            display: none;
+        }
+
+        /* Main Content Area */
+        .content {
+            width: 80%;
+            padding: 30px;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            position: relative;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .content-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .content-header .level-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.2);
+            color: #60a5fa;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #475569;
+        }
+
+        .panel-title i {
+            color: #60a5fa;
+        }
+
+        .panel-content {
+            line-height: 1.7;
+            font-size: 1.1rem;
+            color: #cbd5e1;
+        }
+
+        .panel-content p {
+            margin-bottom: 20px;
+        }
+
+        .web-evolution {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            gap: 20px;
+        }
+
+        .web-era {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border-top: 5px solid;
+            transition: transform 0.3s;
+        }
+
+        .web-era:hover {
+            transform: translateY(-5px);
+        }
+
+        .web-era.web1 { border-color: #ef4444; }
+        .web-era.web2 { border-color: #f59e0b; }
+        .web-era.web3 { border-color: #10b981; }
+
+        .era-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .web1 .era-icon { color: #ef4444; }
+        .web2 .era-icon { color: #f59e0b; }
+        .web3 .era-icon { color: #10b981; }
+
+        .era-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .era-description {
+            font-size: 1rem;
+            color: #94a3b8;
+        }
+
+        .web3-pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .pillar {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .pillar:hover {
+            border-color: #60a5fa;
+            transform: translateY(-5px);
+        }
+
+        .pillar.defi {
+            border-color: #3b82f6;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .pillar-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .defi .pillar-icon { color: #3b82f6; }
+        .nft .pillar-icon { color: #8b5cf6; }
+        .dao .pillar-icon { color: #10b981; }
+        .metaverse .pillar-icon { color: #f59e0b; }
+
+        .pillar-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .pillar-description {
+            font-size: 1rem;
+            color: #94a3b8;
+        }
+
+        .core-tenets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .tenet {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid #60a5fa;
+        }
+
+        .tenet-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .defi-role {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(30, 41, 59, 0.9));
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid #3b82f6;
+        }
+
+        .defi-role-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .infographic {
+            width: 100%;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 25px;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 16px;
+        }
+
+        .infographic-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            color: #f1f5f9;
+        }
+
+        .infographic-viz {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        .viz-web3 {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.2);
+            border: 3px solid #10b981;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .viz-web3 span {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #10b981;
+        }
+
+        .viz-pillar {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .viz-pillar.defi {
+            top: 50px;
+            left: 100px;
+            background: rgba(59, 130, 246, 0.2);
+            border: 2px solid #3b82f6;
+        }
+
+        .viz-pillar.nft {
+            top: 50px;
+            right: 100px;
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid #8b5cf6;
+        }
+
+        .viz-pillar.dao {
+            bottom: 50px;
+            left: 100px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid #10b981;
+        }
+
+        .viz-pillar.metaverse {
+            bottom: 50px;
+            right: 100px;
+            background: rgba(245, 158, 11, 0.2);
+            border: 2px solid #f59e0b;
+        }
+
+        .viz-line {
+            position: absolute;
+            height: 3px;
+            background: #475569;
+            z-index: 1;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+        }
+
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(37, 99, 235, 0.2);
+            color: #60a5fa;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid #3b82f6;
+        }
+
+        .nav-button:hover {
+            background: rgba(37, 99, 235, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .nav-button i {
+            font-size: 1.2rem;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 70px;
+                border-right: none;
+                border-bottom: 1px solid #334155;
+            }
+            
+            .sidebar.collapsed {
+                width: 100%;
+                height: 70px;
+            }
+            
+            .sidebar:not(.collapsed) {
+                height: 100vh;
+                position: fixed;
+                z-index: 100;
+            }
+            
+            .content {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .web-evolution, .core-tenets {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .web3-pillars {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-header h1 {
+                font-size: 2rem;
+            }
+            
+            .infographic-viz {
+                height: 250px;
+            }
+            
+            .viz-web3 {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .viz-pillar {
+                width: 100px;
+                height: 100px;
+                padding: 10px;
+            }
+            
+            .viz-pillar.defi {
+                top: 30px;
+                left: 30px;
+            }
+            
+            .viz-pillar.nft {
+                top: 30px;
+                right: 30px;
+            }
+            
+            .viz-pillar.dao {
+                bottom: 30px;
+                left: 30px;
+            }
+            
+            .viz-pillar.metaverse {
+                bottom: 30px;
+                right: 30px;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar / Outline -->
+        <div class="sidebar collapsed" id="sidebar">
+            <div class="menu-toggle" id="menuToggle">
+                <div class="menu-dots">•••</div>
+            </div>
+            
+            <div class="outline-title">
+                <h2><i class="fas fa-sitemap"></i> Course Outline</h2>
+            </div>
+            
+            <ul class="outline-list">
+                <li class="outline-item active" data-panel="intro">
+                    <i class="fas fa-play-circle"></i>
+                    <span>Introduction to Web3</span>
+                </li>
+                <li class="outline-item" data-panel="evolution">
+                    <i class="fas fa-code-branch"></i>
+                    <span>From Web1 to Web3</span>
+                </li>
+                <li class="outline-item" data-panel="tenets">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Core Tenets of Web3</span>
+                </li>
+                <li class="outline-item" data-panel="pillars">
+                    <i class="fas fa-columns"></i>
+                    <span>Pillars of Web3</span>
+                </li>
+                <li class="outline-item" data-panel="defiRole">
+                    <i class="fas fa-coins"></i>
+                    <span>DeFi's Role in Web3</span>
+                </li>
+                <li class="outline-item" data-panel="infographic">
+                    <i class="fas fa-chart-network"></i>
+                    <span>Web3 Ecosystem Map</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="content">
+            <div class="content-header">
+                <h1>The Paradigm Shift: Web3 Foundations</h1>
+                <p>Understanding the Internet of Value & Ownership</p>
+                <div class="level-badge">Level 1: Foundation</div>
+            </div>
+            
+            <!-- Introduction Panel -->
+            <div class="content-panel active" id="intro">
+                <h2 class="panel-title"><i class="fas fa-play-circle"></i> Introduction to Web3</h2>
+                <div class="panel-content">
+                    <p>Welcome to the foundational level of your Web3 & DeFi journey. Before we dive into the mechanics of decentralized finance, we must first understand the paradigm shift that makes it all possible.</p>
+                    
+                    <p><strong>Web3 represents the next evolution of the internet</strong> - a shift from centralized platforms owned by corporations to decentralized protocols owned by users. This isn't just a technological upgrade; it's a fundamental reimagining of how value and ownership work on the internet.</p>
+                    
+                    <p>In Web2, we were users who created content and data but didn't own it. In Web3, we become participants with verifiable ownership of our digital assets, identities, and contributions. This shift is enabled by three key technologies: blockchain, smart contracts, and cryptographic tokens.</p>
+                    
+                    <div class="core-tenets">
+                        <div class="tenet">
+                            <h3 class="tenet-title">User Sovereignty</h3>
+                            <p>You control your digital identity, data, and assets through cryptographic keys rather than usernames and passwords managed by corporations.</p>
+                        </div>
+                        <div class="tenet">
+                            <h3 class="tenet-title">Trust Minimization</h3>
+                            <p>Transactions and agreements are enforced by code running on decentralized networks rather than trusting intermediaries.</p>
+                        </div>
+                        <div class="tenet">
+                            <h3 class="tenet-title">Value Native</h3>
+                            <p>The internet has a native layer for value transfer and ownership, enabling new economic models and financial systems.</p>
+                        </div>
+                    </div>
+                    
+                    <p>Within this new paradigm, <strong>DeFi (Decentralized Finance)</strong> emerges as the financial infrastructure layer - the system that allows for permissionless, transparent, and programmable financial services built on this decentralized foundation.</p>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="nav-buttons">
+                    <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button">
+                        <i class="fas fa-home"></i> Return to Home
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Evolution Panel -->
+            <div class="content-panel" id="evolution">
+                <h2 class="panel-title"><i class="fas fa-code-branch"></i> From Web1 to Web3: The Evolution</h2>
+                <div class="panel-content">
+                    <p>The journey to Web3 has been a progression of increasing interactivity, user participation, and now, ownership.</p>
+                    
+                    <div class="web-evolution">
+                        <div class="web-era web1">
+                            <div class="era-icon"><i class="fas fa-book-reader"></i></div>
+                            <h3 class="era-title">Web1 (1990-2004)</h3>
+                            <p class="era-description">The <strong>Read-Only Web</strong>. Static websites, limited interactivity. Users were consumers of information created by a small number of publishers.</p>
+                        </div>
+                        
+                        <div class="web-era web2">
+                            <div class="era-icon"><i class="fas fa-edit"></i></div>
+                            <h3 class="era-title">Web2 (2004-Present)</h3>
+                            <p class="era-description">The <strong>Read-Write Web</strong>. Dynamic websites, social media, user-generated content. Centralized platforms (Facebook, Google) own user data and monetize attention.</p>
+                        </div>
+                        
+                        <div class="web-era web3">
+                            <div class="era-icon"><i class="fas fa-key"></i></div>
+                            <h3 class="era-title">Web3 (Emerging)</h3>
+                            <p class="era-description">The <strong>Read-Write-Own Web</strong>. Decentralized protocols, user-owned data and assets. Built on blockchain technology with cryptographic verification of ownership.</p>
+                        </div>
+                    </div>
+                    
+                    <p>This evolution represents a fundamental shift in power dynamics. In Web2, value accrues to platform owners. In Web3, value accrues to protocol participants through token ownership and network effects.</p>
+                    
+                    <p><strong>The critical insight:</strong> Web3 doesn't just add another feature to the internet; it adds a native <em>ownership layer</em> that was previously impossible. This ownership layer is what enables true digital property rights, which in turn enables decentralized finance.</p>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="nav-buttons">
+                    <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button">
+                        <i class="fas fa-home"></i> Return to Home
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tenets Panel -->
+            <div class="content-panel" id="tenets">
+                <h2 class="panel-title"><i class="fas fa-shield-alt"></i> Core Tenets of Web3</h2>
+                <div class="panel-content">
+                    <p>Web3 is built upon foundational principles that distinguish it from previous internet eras. These tenets guide the development of protocols and applications in this new paradigm.</p>
+                    
+                    <div class="core-tenets">
+                        <div class="tenet">
+                            <h3 class="tenet-title"><i class="fas fa-network-wired"></i> Decentralization</h3>
+                            <p>Control is distributed across a network rather than concentrated in central authorities. This reduces single points of failure and censorship resistance.</p>
+                        </div>
+                        <div class="tenet">
+                            <h3 class="tenet-title"><i class="fas fa-user-lock"></i> Self-Sovereignty</h3>
+                            <p>Users have true ownership and control over their digital identities, assets, and data through cryptographic keys they alone control.</p>
+                        </div>
+                        <div class="tenet">
+                            <h3 class="tenet-title"><i class="fas fa-handshake"></i> Trust Minimization</h3>
+                            <p>Systems are designed to minimize reliance on trusted third parties through cryptographic proofs and transparent code execution.</p>
+                        </div>
+                        <div class="tenet">
+                            <h3 class="tenet-title"><i class="fas fa-puzzle-piece"></i> Composability</h3>
+                            <p>Protocols are built as interoperable "money legos" that can be combined and integrated to create new financial products and services.</p>
+                        </div>
+                    </div>
+                    
+                    <p>These tenets work together to create a new internet architecture. <strong>Decentralization</strong> provides the structural foundation, <strong>self-sovereignty</strong> ensures user agency, <strong>trust minimization</strong> reduces counterparty risk, and <strong>composability</strong> enables rapid innovation.</p>
+                    
+                    <p>For DeFi specifically, these principles mean that financial services are:
+                    <ul style="padding-left: 30px; margin: 20px 0;">
+                        <li>Accessible to anyone with an internet connection (permissionless)</li>
+                        <li>Transparent with all transactions visible on public ledgers</li>
+                        <li>Interoperable across different protocols and applications</li>
+                        <li>Governed by stakeholders rather than corporate boards</li>
+                    </ul>
+                    </p>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="nav-buttons">
+                    <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button">
+                        <i class="fas fa-home"></i> Return to Home
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Pillars Panel -->
+            <div class="content-panel" id="pillars">
+                <h2 class="panel-title"><i class="fas fa-columns"></i> Pillars of Web3</h2>
+                <div class="panel-content">
+                    <p>Web3 is composed of several interconnected pillars, each representing a major application category built on decentralized technology. These pillars are not silos but rather interoperable components of the broader ecosystem.</p>
+                    
+                    <div class="web3-pillars">
+                        <div class="pillar defi">
+                            <div class="pillar-icon"><i class="fas fa-coins"></i></div>
+                            <h3 class="pillar-title">DeFi</h3>
+                            <p class="pillar-description"><strong>Decentralized Finance</strong> - Open financial infrastructure for lending, borrowing, trading, and earning yield without traditional intermediaries.</p>
+                        </div>
+                        
+                        <div class="pillar nft">
+                            <div class="pillar-icon"><i class="fas fa-image"></i></div>
+                            <h3 class="pillar-title">NFTs & Digital Ownership</h3>
+                            <p class="pillar-description"><strong>Non-Fungible Tokens</strong> - Verifiable digital ownership of unique assets like art, collectibles, and intellectual property.</p>
+                        </div>
+                        
+                        <div class="pillar dao">
+                            <div class="pillar-icon"><i class="fas fa-users"></i></div>
+                            <h3 class="pillar-title">DAOs</h3>
+                            <p class="pillar-description"><strong>Decentralized Autonomous Organizations</strong> - Community-owned and governed organizations without traditional corporate structure.</p>
+                        </div>
+                        
+                        <div class="pillar metaverse">
+                            <div class="pillar-icon"><i class="fas fa-globe"></i></div>
+                            <h3 class="pillar-title">Metaverse & Virtual Worlds</h3>
+                            <p class="pillar-description">Persistent virtual environments where users can interact, socialize, and own digital land and assets.</p>
+                        </div>
+                    </div>
+                    
+                    <p>While each pillar has distinct characteristics and use cases, they are deeply interconnected:</p>
+                    
+                    <ul style="padding-left: 30px; margin: 20px 0;">
+                        <li><strong>NFTs can be used as collateral in DeFi protocols</strong> (e.g., borrowing against your CryptoPunk)</li>
+                        <li><strong>DAOs often hold treasury assets in DeFi protocols</strong> to generate yield for their communities</li>
+                        <li><strong>Metaverse economies rely on DeFi for their financial infrastructure</strong> and NFTs for virtual property rights</li>
+                        <li><strong>DeFi protocols themselves are often governed by DAOs</strong> of token holders</li>
+                    </ul>
+                    
+                    <p>This interconnectedness is a defining feature of Web3 and demonstrates why understanding DeFi requires understanding its role within the broader ecosystem.</p>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="nav-buttons">
+                    <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button">
+                        <i class="fas fa-home"></i> Return to Home
+                    </a>
+                </div>
+            </div>
+            
+            <!-- DeFi Role Panel -->
+            <div class="content-panel" id="defiRole">
+                <h2 class="panel-title"><i class="fas fa-coins"></i> DeFi's Role in Web3</h2>
+                <div class="panel-content">
+                    <div class="defi-role">
+                        <h3 class="defi-role-title"><i class="fas fa-university"></i> The Financial Infrastructure Layer</h3>
+                        <p>Decentralized Finance (DeFi) serves as the <strong>open financial infrastructure</strong> for the entire Web3 ecosystem. Just as traditional finance underpins the global economy, DeFi provides the financial plumbing for the decentralized internet.</p>
+                        
+                        <p>Within the Web3 stack, DeFi occupies a critical position:</p>
+                        
+                        <ul style="padding-left: 30px; margin: 20px 0;">
+                            <li><strong>Infrastructure Layer:</strong> Blockchain networks (Ethereum, Solana, etc.)</li>
+                            <li><strong>Protocol Layer:</strong> DeFi primitives (lending, trading, derivatives)</li>
+                            <li><strong>Application Layer:</strong> User-facing dApps and interfaces</li>
+                            <li><strong>Access Layer:</strong> Wallets, browsers, and onboarding tools</li>
+                        </ul>
+                        
+                        <p>DeFi protocols are the "money legos" that can be combined in various ways to create financial services that are:</p>
+                        
+                        <div class="core-tenets">
+                            <div class="tenet">
+                                <h3 class="tenet-title">Permissionless</h3>
+                                <p>Anyone can access services without approval from gatekeepers or meeting geographic restrictions.</p>
+                            </div>
+                            <div class="tenet">
+                                <h3 class="tenet-title">Transparent</h3>
+                                <p>All transactions, protocol rules, and smart contract code are visible on public blockchains.</p>
+                            </div>
+                            <div class="tenet">
+                                <h3 class="tenet-title">Programmable</h3>
+                                <p>Financial agreements and products are encoded in smart contracts that execute automatically.</p>
+                            </div>
+                        </div>
+                        
+                        <p>Most importantly, DeFi enables <strong>true digital ownership of financial assets</strong>. When you deposit into a DeFi protocol, you receive tokens representing your ownership claim. These tokens can be traded, used as collateral, or integrated into other Web3 applications.</p>
+                        
+                        <p>This creates a financial system that is native to the internet itself - not just a digitized version of traditional finance, but a fundamentally new architecture built for the digital age.</p>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="nav-buttons">
+                    <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button">
+                        <i class="fas fa-home"></i> Return to Home
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Infographic Panel -->
+            <div class="content-panel" id="infographic">
+                <h2 class="panel-title"><i class="fas fa-chart-network"></i> Web3 Ecosystem Map</h2>
+                <div class="panel-content">
+                    <p>This visualization illustrates how DeFi fits within the broader Web3 ecosystem and interacts with other key pillars:</p>
+                    
+                    <div class="infographic">
+                        <h3 class="infographic-title">The Web3 Ecosystem: Where DeFi Fits</h3>
+                        
+                        <div class="infographic-viz">
+                            <!-- Connecting lines -->
+                            <div class="viz-line" style="width: 120px; transform: rotate(45deg); top: 90px; left: 180px;"></div>
+                            <div class="viz-line" style="width: 120px; transform: rotate(-45deg); top: 90px; right: 180px;"></div>
+                            <div class="viz-line" style="width: 120px; transform: rotate(-45deg); bottom: 90px; left: 180px;"></div>
+                            <div class="viz-line" style="width: 120px; transform: rotate(45deg); bottom: 90px; right: 180px;"></div>
+                            
+                            <!-- Central Web3 Circle -->
+                            <div class="viz-web3">
+                                <span>Web3</span>
+                            </div>
+                            
+                            <!-- DeFi Pillar -->
+                            <div class="viz-pillar defi">
+                                <i class="fas fa-coins" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <span style="font-weight: bold; color: #3b82f6;">DeFi</span>
+                                <span style="font-size: 0.8rem; color: #93c5fd;">Financial Infrastructure</span>
+                            </div>
+                            
+                            <!-- NFT Pillar -->
+                            <div class="viz-pillar nft">
+                                <i class="fas fa-image" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <span style="font-weight: bold; color: #8b5cf6;">NFTs</span>
+                                <span style="font-size: 0.8rem; color: #c4b5fd;">Digital Ownership</span>
+                            </div>
+                            
+                            <!-- DAO Pillar -->
+                            <div class="viz-pillar dao">
+                                <i class="fas fa-users" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <span style="font-weight: bold; color: #10b981;">DAOs</span>
+                                <span style="font-size: 0.8rem; color: #a7f3d0;">Governance</span>
+                            </div>
+                            
+                            <!-- Metaverse Pillar -->
+                            <div class="viz-pillar metaverse">
+                                <i class="fas fa-globe" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <span style="font-weight: bold; color: #f59e0b;">Metaverse</span>
+                                <span style="font-size: 0.8rem; color: #fde68a;">Virtual Worlds</span>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 20px;">
+                            <p><strong>Key Interactions:</strong></p>
+                            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 15px;">
+                                <div style="background: rgba(59, 130, 246, 0.1); padding: 10px; border-radius: 8px; border-left: 3px solid #3b82f6;">
+                                    <small><strong>DeFi → NFTs:</strong> NFT lending, fractionalization</small>
+                                </div>
+                                <div style="background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 8px; border-left: 3px solid #10b981;">
+                                    <small><strong>DeFi → DAOs:</strong> Treasury management, protocol governance</small>
+                                </div>
+                                <div style="background: rgba(245, 158, 11, 0.1); padding: 10px; border-radius: 8px; border-left: 3px solid #f59e0b;">
+                                    <small><strong>DeFi → Metaverse:</strong> Virtual economies, land financing</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>This interconnected ecosystem demonstrates that DeFi is not an isolated phenomenon but rather a core component of Web3's infrastructure. As you progress through this course, you'll learn how these components work together to create a new paradigm for digital interaction and value exchange.</p>
+                    
+                    <div class="defi-role" style="margin-top: 40px;">
+                        <h3 class="defi-role-title"><i class="fas fa-arrow-right"></i> Next Steps</h3>
+                        <p>Now that you understand Web3 as the overarching paradigm, you're ready to dive into the technical foundations. In <strong>Level 2: The Engine Room</strong>, we'll explore blockchain technology, smart contracts, and cryptocurrencies - the building blocks that make DeFi and the entire Web3 ecosystem possible.</p>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="nav-buttons">
+                    <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button">
+                        <i class="fas fa-home"></i> Return to Home
+                    </a>
+                    <a href="C:\Users\Dell\Downloads\Defi\Defi2.html" class="nav-button">
+                        Continue to Level 2: Blockchain & Crypto Primitives <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const outlineItems = document.querySelectorAll('.outline-item');
+        const contentPanels = document.querySelectorAll('.content-panel');
+        
+        // Toggle sidebar collapse/expand
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            
+            // Update menu dots icon
+            const dots = menuToggle.querySelector('.menu-dots');
+            if (sidebar.classList.contains('collapsed')) {
+                dots.textContent = '•••';
+            } else {
+                dots.textContent = '←';
+            }
+        });
+        
+        // Handle outline item clicks
+        outlineItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Get the panel to show
+                const panelId = item.getAttribute('data-panel');
+                
+                // Update active state in outline
+                outlineItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Show the corresponding panel
+                contentPanels.forEach(panel => {
+                    panel.classList.remove('active');
+                    if (panel.id === panelId) {
+                        panel.classList.add('active');
+                    }
+                });
+                
+                // Auto-collapse sidebar on mobile
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.add('collapsed');
+                    menuToggle.querySelector('.menu-dots').textContent = '•••';
+                }
+            });
+        });
+        
+        // Initialize with first panel active
+        document.querySelector('.outline-item[data-panel="intro"]').click();
+        
+        // Add some interactive effects to the visualization
+        document.addEventListener('DOMContentLoaded', function() {
+            const pillars = document.querySelectorAll('.pillar, .web-era');
+            
+            pillars.forEach(pillar => {
+                pillar.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                    this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+                });
+                
+                pillar.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // Add a subtle animation to the Web3 central circle
+            const web3Circle = document.querySelector('.viz-web3');
+            if (web3Circle) {
+                setInterval(() => {
+                    web3Circle.style.transform = web3Circle.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

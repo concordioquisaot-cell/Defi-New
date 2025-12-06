@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 & DeFi Mastery - Learning Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cyber-purple: #9d4edd;
+            --neon-blue: #4cc9f0;
+            --matrix-green: #00ff9d;
+            --cyber-pink: #ff2e93;
+            --dark-space: #0a0b1e;
+            --midnight-blue: #121335;
+            --hologram-teal: #00d4ff;
+            --cyber-yellow: #ffd700;
+            --deep-space: #050617;
+            --void-black: #030311;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--void-black) 0%, var(--dark-space) 50%, var(--midnight-blue) 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(157, 78, 221, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(76, 201, 240, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(0, 255, 157, 0.05) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Header with Glow Effect */
+        .header {
+            text-align: center;
+            padding: 60px 30px 40px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 25px;
+            background: linear-gradient(145deg, rgba(10, 11, 30, 0.8), rgba(18, 19, 53, 0.6));
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            box-shadow: 
+                0 10px 40px rgba(157, 78, 221, 0.15),
+                0 0 80px rgba(76, 201, 240, 0.05),
+                inset 0 0 20px rgba(76, 201, 240, 0.05);
+        }
+        
+        .title {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--cyber-purple), var(--neon-blue), var(--matrix-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 40px rgba(76, 201, 240, 0.4);
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            font-size: 1.8rem;
+            color: #a5b4cb;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+        
+        /* Introduction Section */
+        .intro-section {
+            background: linear-gradient(145deg, rgba(10, 11, 30, 0.8), rgba(18, 19, 53, 0.7));
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(76, 201, 240, 0.2);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .intro-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--cyber-purple), var(--neon-blue), var(--matrix-green));
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-title i {
+            color: var(--neon-blue);
+        }
+        
+        .intro-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+        
+        /* Learning Objectives */
+        .objectives-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .objective-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border-left: 5px solid var(--neon-blue);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .objective-card:nth-child(2) {
+            border-left-color: var(--matrix-green);
+        }
+        
+        .objective-card:nth-child(3) {
+            border-left-color: var(--cyber-pink);
+        }
+        
+        .objective-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.09);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .objective-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+        }
+        
+        .objective-card:nth-child(2) .objective-icon {
+            color: var(--matrix-green);
+        }
+        
+        .objective-card:nth-child(3) .objective-icon {
+            color: var(--cyber-pink);
+        }
+        
+        .objective-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .objective-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .objective-list li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+        
+        .objective-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--matrix-green);
+            font-weight: bold;
+        }
+        
+        /* Navigation Guide */
+        .guide-container {
+            background: linear-gradient(145deg, rgba(10, 11, 30, 0.9), rgba(18, 19, 53, 0.8));
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .guide-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .guide-step {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(76, 201, 240, 0.1);
+        }
+        
+        .guide-step:hover {
+            transform: translateY(-8px);
+            border-color: rgba(76, 201, 240, 0.4);
+            box-shadow: 0 15px 35px rgba(76, 201, 240, 0.15);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--cyber-purple), var(--neon-blue));
+            color: white;
+            border-radius: 50%;
+            line-height: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.4);
+        }
+        
+        .step-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .step-desc {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+        
+        /* Learning Path Diagram */
+        .diagram-container {
+            background: linear-gradient(145deg, rgba(10, 11, 30, 0.9), rgba(18, 19, 53, 0.8));
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        .diagram {
+            position: relative;
+            height: 400px;
+            margin: 40px auto;
+            max-width: 1000px;
+        }
+        
+        .diagram-line {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--cyber-purple), var(--neon-blue), var(--matrix-green), var(--cyber-pink), var(--cyber-yellow));
+            transform: translateY(-50%);
+            border-radius: 4px;
+            z-index: 1;
+        }
+        
+        .diagram-node {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 3px solid white;
+        }
+        
+        .diagram-node:hover {
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        }
+        
+        .node-1 { 
+            left: 5%; 
+            background: linear-gradient(135deg, var(--cyber-purple), #7b2cbf);
+        }
+        .node-2 { 
+            left: 25%; 
+            background: linear-gradient(135deg, var(--neon-blue), #00a8d7);
+        }
+        .node-3 { 
+            left: 45%; 
+            background: linear-gradient(135deg, var(--matrix-green), #00a884);
+        }
+        .node-4 { 
+            left: 65%; 
+            background: linear-gradient(135deg, var(--cyber-pink), #e91e63);
+        }
+        .node-5 { 
+            left: 85%; 
+            background: linear-gradient(135deg, var(--cyber-yellow), #ffaa00);
+        }
+        
+        .node-label {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            white-space: nowrap;
+        }
+        
+        .node-level {
+            position: absolute;
+            bottom: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--neon-blue);
+            font-weight: bold;
+            font-size: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        /* Course Cards */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .course-card {
+            background: linear-gradient(145deg, rgba(10, 11, 30, 0.8), rgba(18, 19, 53, 0.7));
+            border-radius: 25px;
+            padding: 35px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(157, 78, 221, 0.5);
+            box-shadow: 0 20px 50px rgba(157, 78, 221, 0.25);
+        }
+        
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--cyber-purple), var(--neon-blue));
+        }
+        
+        .course-level {
+            display: inline-block;
+            background: rgba(157, 78, 221, 0.2);
+            color: var(--cyber-purple);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border: 1px solid rgba(157, 78, 221, 0.3);
+        }
+        
+        .course-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .course-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .course-desc {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            min-height: 80px;
+        }
+        
+        .file-path {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            margin: 15px 0;
+            overflow-wrap: break-word;
+            border: 1px solid rgba(76, 201, 240, 0.2);
+        }
+        
+        .open-btn {
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-pink));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            width: 100%;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .open-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.4);
+            background: linear-gradient(135deg, var(--cyber-pink), var(--cyber-purple));
+        }
+        
+        .open-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 80px;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            text-align: center;
+            background: rgba(5, 6, 23, 0.7);
+            border-radius: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .footer h3 {
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .keyboard-shortcuts {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .key {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-family: monospace;
+            font-size: 1.1rem;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .shortcut-label {
+            color: #cbd5e1;
+            font-size: 1rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .title {
+                font-size: 3.2rem;
+            }
+            
+            .diagram {
+                height: 350px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .title {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.3rem;
+            }
+            
+            .diagram {
+                height: 300px;
+            }
+            
+            .diagram-node {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .intro-section, .guide-container, .diagram-container {
+                padding: 30px;
+            }
+            
+            .diagram {
+                height: 250px;
+            }
+            
+            .diagram-node {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .node-label {
+                font-size: 0.9rem;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title"><i class="fas fa-globe"></i> Web3 & DeFi Mastery</h1>
+            <p class="subtitle">Complete Interactive Learning Journey into the Future of Finance</p>
+            <div style="margin-top: 30px; color: #a5b4cb; font-size: 1.2rem;">
+                <i class="fas fa-rocket" style="color: var(--neon-blue); margin-right: 10px;"></i>
+                Master the decentralized future in 5 comprehensive modules
+            </div>
+        </header>
+        
+        <!-- Introduction -->
+        <section class="intro-section">
+            <h2 class="section-title"><i class="fas fa-compass"></i> Welcome to Your Web3 Journey</h2>
+            <p class="intro-text">
+                This interactive learning portal is your gateway to mastering Web3 and Decentralized Finance (DeFi). 
+                In this comprehensive course suite, you'll journey from foundational concepts to advanced strategies, 
+                gaining practical knowledge and insights into the technologies reshaping finance, ownership, and digital interaction.
+                Whether you're a complete beginner or looking to deepen your expertise, this structured path will equip you with 
+                the skills to navigate and thrive in the decentralized future.
+            </p>
+            
+            <h2 class="section-title" style="margin-top: 60px;"><i class="fas fa-bullseye"></i> Learning Objectives</h2>
+            <div class="objectives-container">
+                <div class="objective-card">
+                    <div class="objective-icon"><i class="fas fa-layer-group"></i></div>
+                    <h3 class="objective-title">Foundational Mastery</h3>
+                    <ul class="objective-list">
+                        <li>Understand the core principles of Web3 and blockchain technology</li>
+                        <li>Grasp the fundamental shift from Web2 to decentralized systems</li>
+                        <li>Learn cryptographic primitives and their role in digital ownership</li>
+                        <li>Master wallet creation, management, and security best practices</li>
+                    </ul>
+                </div>
+                
+                <div class="objective-card">
+                    <div class="objective-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="objective-title">DeFi Expertise</h3>
+                    <ul class="objective-list">
+                        <li>Navigate major DeFi protocols and understand their mechanics</li>
+                        <li>Master yield farming, liquidity provision, and staking strategies</li>
+                        <li>Analyze risk factors and implement proper risk management</li>
+                        <li>Understand tokenomics and governance mechanisms</li>
+                    </ul>
+                </div>
+                
+                <div class="objective-card">
+                    <div class="objective-icon"><i class="fas fa-chess-queen"></i></div>
+                    <h3 class="objective-title">Advanced Application</h3>
+                    <ul class="objective-list">
+                        <li>Develop advanced DeFi strategies for optimal returns</li>
+                        <li>Understand and utilize derivatives in decentralized finance</li>
+                        <li>Navigate regulatory landscapes and compliance requirements</li>
+                        <li>Participate effectively in DAOs and decentralized governance</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Navigation Guide -->
+        <section class="guide-container">
+            <h2 class="section-title"><i class="fas fa-map-signs"></i> How to Navigate This Learning Module</h2>
+            <p class="intro-text" style="margin-bottom: 20px;">
+                Follow this simple guide to maximize your learning experience. The module is designed for both linear progression and flexible exploration.
+            </p>
+            
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Start at Level 1</h3>
+                    <p class="step-desc">Begin with "The Paradigm Shift" to build your foundational knowledge. Each course builds upon the previous one.</p>
+                </div>
+                
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Use Navigation Features</h3>
+                    <p class="step-desc">Every course has a "Return to Index" button in the top-right corner. Use it to come back here anytime.</p>
+                </div>
+                
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Keyboard Shortcuts</h3>
+                    <p class="step-desc">Press keys 1-5 to open courses instantly. Press 'I' in any course to return to this index.</p>
+                </div>
+                
+                <div class="guide-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Flexible Learning Path</h3>
+                    <p class="step-desc">You can follow the sequence or jump to specific topics. The diagram below shows how all concepts connect.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Learning Path Diagram -->
+        <section class="diagram-container">
+            <h2 class="section-title"><i class="fas fa-project-diagram"></i> Learning Path Diagram</h2>
+            <p class="intro-text" style="margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto;">
+                This visual roadmap illustrates your journey from foundational concepts to advanced mastery. Click on any node to jump directly to that course.
+            </p>
+            
+            <div class="diagram">
+                <div class="diagram-line"></div>
+                
+                <div class="diagram-node node-1" onclick="openCourse(1)">
+                    <i class="fas fa-rocket"></i>
+                    <div class="node-level">Level 1</div>
+                    <div class="node-label">Paradigm Shift</div>
+                </div>
+                
+                <div class="diagram-node node-2" onclick="openCourse(2)">
+                    <i class="fas fa-cogs"></i>
+                    <div class="node-level">Level 2</div>
+                    <div class="node-label">Engine Room</div>
+                </div>
+                
+                <div class="diagram-node node-3" onclick="openCourse(3)">
+                    <i class="fas fa-gem"></i>
+                    <div class="node-level">Level 3</div>
+                    <div class="node-label">Financial Layer</div>
+                </div>
+                
+                <div class="diagram-node node-4" onclick="openCourse(4)">
+                    <i class="fas fa-map"></i>
+                    <div class="node-level">Level 4</div>
+                    <div class="node-label">Advanced Navigation</div>
+                </div>
+                
+                <div class="diagram-node node-5" onclick="openCourse(5)">
+                    <i class="fas fa-crown"></i>
+                    <div class="node-level">Level 5</div>
+                    <div class="node-label">Web3 Sovereignty</div>
+                </div>
+            </div>
+            
+            <p style="color: #cbd5e1; margin-top: 40px; font-size: 1.1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <i class="fas fa-lightbulb" style="color: var(--cyber-yellow); margin-right: 10px;"></i>
+                <strong>Pro Tip:</strong> Follow the sequence from left to right for optimal learning, but feel free to explore topics that interest you most.
+            </p>
+        </section>
+        
+        <!-- Course Cards -->
+        <h2 class="section-title" style="text-align: center; margin-top: 60px;"><i class="fas fa-graduation-cap"></i> Course Modules</h2>
+        <p style="text-align: center; color: #cbd5e1; font-size: 1.2rem; margin-bottom: 40px; max-width: 900px; margin-left: auto; margin-right: auto;">
+            Click on any module below to begin your learning journey. Each course is a comprehensive, interactive HTML file with built-in navigation.
+        </p>
+        
+        <div class="courses-grid">
+            <!-- Level 1 -->
+            <div class="course-card">
+                <div class="course-level">Level 1 of 5</div>
+                <div class="course-icon">🚀</div>
+                <h3 class="course-title">The Paradigm Shift</h3>
+                <p class="course-desc">Web3 Foundations: Understanding the Internet of Value & Ownership. Learn the core principles that define the new digital economy and the shift from Web2 to Web3.</p>
+                <div class="file-path">C:\Users\Dell\Downloads\Defi\Defi1.html</div>
+                <button class="open-btn" onclick="openCourse(1)">Open Course 1</button>
+            </div>
+            
+            <!-- Level 2 -->
+            <div class="course-card">
+                <div class="course-level">Level 2 of 5</div>
+                <div class="course-icon">⚙️</div>
+                <h3 class="course-title">The Engine Room</h3>
+                <p class="course-desc">Blockchain & Crypto Primitives: How Web3 Works Under the Hood. Dive into blockchain technology, smart contracts, and the mechanics that power decentralized systems.</p>
+                <div class="file-path">C:\Users\Dell\Downloads\Defi\Defi2.html</div>
+                <button class="open-btn" onclick="openCourse(2)">Open Course 2</button>
+            </div>
+            
+            <!-- Level 3 -->
+            <div class="course-card">
+                <div class="course-level">Level 3 of 5</div>
+                <div class="course-icon">💎</div>
+                <h3 class="course-title">The Financial Layer</h3>
+                <p class="course-desc">DeFi Deep Dive: Protocols, Primitives, and Yield Mechanics. Understand how decentralized finance is reshaping traditional financial systems with innovative protocols.</p>
+                <div class="file-path">C:\Users\Dell\Downloads\Defi\Defi3.html</div>
+                <button class="open-btn" onclick="openCourse(3)">Open Course 3</button>
+            </div>
+            
+            <!-- Level 4 -->
+            <div class="course-card">
+                <div class="course-level">Level 4 of 5</div>
+                <div class="course-icon">🧭</div>
+                <h3 class="course-title">Advanced Navigation & Risk</h3>
+                <p class="course-desc">Advanced DeFi: Strategy, Derivatives, and Comprehensive Risk Management. Master complex protocols, derivatives, and risk assessment techniques.</p>
+                <div class="file-path">C:\Users\Dell\Downloads\Defi\Defi4.html</div>
+                <button class="open-btn" onclick="openCourse(4)">Open Course 4</button>
+            </div>
+            
+            <!-- Level 5 -->
+            <div class="course-card">
+                <div class="course-level">Level 5 of 5</div>
+                <div class="course-icon">👑</div>
+                <h3 class="course-title">Web3 Sovereignty</h3>
+                <p class="course-desc">Governing the Digital Frontier: DAOs, Regulations, and Future Horizons. Explore decentralized governance, regulatory landscapes, and the future of Web3 ecosystems.</p>
+                <div class="file-path">C:\Users\Dell\Downloads\Defi\Defi5.html</div>
+                <button class="open-btn" onclick="openCourse(5)">Open Course 5</button>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <h3><i class="fas fa-infinity"></i> Web3 & DeFi Mastery - Complete Learning Suite</h3>
+            <p style="margin: 20px 0; color: #cbd5e1; font-size: 1.1rem;">
+                Every course includes a "Return to Index" button for seamless navigation between modules
+            </p>
+            
+            <div class="keyboard-shortcuts">
+                <div class="key">1-5</div>
+                <div class="shortcut-label">Open Courses</div>
+                <div class="key">I</div>
+                <div class="shortcut-label">Return to Index</div>
+                <div class="key">← →</div>
+                <div class="shortcut-label">Navigate Diagram</div>
+            </div>
+            
+            <p style="margin-top: 30px; color: #94a3b8; font-size: 0.9rem;">
+                <i class="fas fa-folder-open" style="color: var(--neon-blue); margin-right: 8px;"></i>
+                Files located in: C:\Users\Dell\Downloads\Defi\
+            </p>
+            <p style="color: #94a3b8; margin-top: 10px;">© ConconBooks 2025 - All Rights Reserved</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Course file paths in sequential order
+        const courseFiles = [
+            null, // Index 0 not used
+            'file:///C:/Users/Dell/Downloads/Defi/Defi1.html',
+            'file:///C:/Users/Dell/Downloads/Defi/Defi2.html',
+            'file:///C:/Users/Dell/Downloads/Defi/Defi3.html',
+            'file:///C:/Users/Dell/Downloads/Defi/Defi4.html',
+            'file:///C:/Users/Dell/Downloads/Defi/Defi5.html'
+        ];
+        
+        // Track last opened course
+        let lastOpenedCourse = 0;
+        
+        function openCourse(level) {
+            if (courseFiles[level]) {
+                // Update last opened course
+                lastOpenedCourse = level;
+                
+                // Open the course file
+                window.open(courseFiles[level], '_blank');
+                console.log(`Opened Level ${level}: ${courseFiles[level]}`);
+                
+                // Show notification
+                showNotification(`Opening Level ${level}: ${getCourseTitle(level)}`);
+                
+                // Animate the corresponding diagram node
+                animateDiagramNode(level);
+            }
+        }
+        
+        function getCourseTitle(level) {
+            const titles = [
+                null,
+                "The Paradigm Shift",
+                "The Engine Room",
+                "The Financial Layer",
+                "Advanced Navigation & Risk",
+                "Web3 Sovereignty"
+            ];
+            return titles[level];
+        }
+        
+        function animateDiagramNode(level) {
+            const node = document.querySelector(`.node-${level}`);
+            if (node) {
+                // Add animation class
+                node.style.transform = 'translateY(-50%) scale(1.3)';
+                node.style.boxShadow = '0 0 40px rgba(76, 201, 240, 0.8)';
+                
+                // Remove animation after a delay
+                setTimeout(() => {
+                    node.style.transform = 'translateY(-50%) scale(1)';
+                    node.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
+                }, 800);
+            }
+        }
+        
+        function showNotification(message) {
+            // Remove any existing notification
+            const existingNotification = document.querySelector('.course-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'course-notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-pink));
+                color: white;
+                padding: 20px 40px;
+                border-radius: 30px;
+                font-weight: bold;
+                z-index: 10000;
+                box-shadow: 0 10px 40px rgba(157, 78, 221, 0.5);
+                animation: slideIn 0.4s ease;
+                font-size: 1.2rem;
+                text-align: center;
+                min-width: 350px;
+                max-width: 90%;
+                border: 2px solid rgba(255, 255, 255, 0.2);
+            `;
+            
+            // Add CSS for animation
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { top: -100px; opacity: 0; }
+                        to { top: 30px; opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { top: 30px; opacity: 1; }
+                        to { top: -100px; opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.4s ease';
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+        
+        // Add hover effects to course cards
+        document.querySelectorAll('.course-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Add hover effects to diagram nodes
+        document.querySelectorAll('.diagram-node').forEach(node => {
+            node.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-50%) scale(1.2)';
+                this.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.7)';
+            });
+            
+            node.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-50%) scale(1)';
+                this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
+            });
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Number keys 1-5 to open courses
+            if (e.key >= '1' && e.key <= '5') {
+                openCourse(parseInt(e.key));
+            }
+            
+            // I key to focus on index
+            if (e.key === 'i' || e.key === 'I') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                showNotification("Returned to Learning Portal");
+            }
+            
+            // Arrow keys for navigation
+            if (e.key === 'ArrowRight') {
+                const nextCourse = lastOpenedCourse < 5 ? lastOpenedCourse + 1 : 1;
+                openCourse(nextCourse);
+            }
+            
+            if (e.key === 'ArrowLeft') {
+                const prevCourse = lastOpenedCourse > 1 ? lastOpenedCourse - 1 : 5;
+                openCourse(prevCourse);
+            }
+        });
+        
+        // Show welcome message on load
+        window.addEventListener('load', function() {
+            console.log('🚀 Web3 & DeFi Mastery Learning Portal Loaded');
+            console.log('🎮 Keyboard shortcuts: 1-5 to open courses, I to return to Index, Arrow keys to navigate');
+            
+            // Small delay for welcome notification
+            setTimeout(() => {
+                showNotification("Welcome to Web3 & DeFi Mastery! Press 1-5 to begin.");
+            }, 1000);
+        });
+        
+        // Add click tracking to all open buttons
+        document.querySelectorAll('.open-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Prevent default if needed
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>

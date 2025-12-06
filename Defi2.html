@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 & DeFi Mastery: Level 2 - The Engine Room</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f2b 0%, #1a1f4a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Left Sidebar - Outline */
+        .sidebar {
+            width: 20%;
+            background: rgba(10, 15, 43, 0.95);
+            border-right: 1px solid #00e0ff;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+            box-shadow: 5px 0 15px rgba(0, 224, 255, 0.2);
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .menu-toggle {
+            padding: 20px;
+            background: rgba(10, 15, 43, 0.9);
+            border-bottom: 1px solid #00e0ff;
+            display: flex;
+            justify-content: flex-end;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(20, 25, 60, 0.9);
+        }
+
+        .menu-dots {
+            font-size: 24px;
+            color: #00e0ff;
+            text-shadow: 0 0 10px rgba(0, 224, 255, 0.7);
+        }
+
+        .outline-title {
+            padding: 25px 20px 15px;
+            border-bottom: 1px solid #00e0ff;
+            margin-bottom: 10px;
+        }
+
+        .outline-title h2 {
+            font-size: 1.4rem;
+            color: #00e0ff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 5px rgba(0, 224, 255, 0.5);
+        }
+
+        .outline-list {
+            list-style: none;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0 0 20px;
+        }
+
+        .outline-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(0, 224, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .outline-item:hover {
+            background: rgba(0, 224, 255, 0.1);
+        }
+
+        .outline-item.active {
+            background: rgba(0, 224, 255, 0.15);
+            border-left: 4px solid #ff00ff;
+        }
+
+        .outline-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .outline-item i {
+            font-size: 1.2rem;
+            color: #00e0ff;
+            width: 24px;
+            text-align: center;
+            filter: drop-shadow(0 0 3px rgba(0, 224, 255, 0.7));
+        }
+
+        .outline-item span {
+            font-weight: 500;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar.collapsed .outline-title,
+        .sidebar.collapsed .outline-item span {
+            display: none;
+        }
+
+        /* Main Content Area */
+        .content {
+            width: 80%;
+            padding: 30px;
+            overflow-y: auto;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 224, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 40%),
+                linear-gradient(135deg, #0a0f2b 0%, #1a1f4a 100%);
+            position: relative;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #00e0ff;
+            position: relative;
+        }
+
+        .content-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00e0ff, #ff00ff, #ffff00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 224, 255, 0.3);
+            position: relative;
+        }
+
+        .content-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00e0ff, #ff00ff, transparent);
+        }
+
+        .content-header .level-badge {
+            display: inline-block;
+            background: rgba(0, 224, 255, 0.15);
+            color: #00e0ff;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid rgba(0, 224, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 224, 255, 0.3);
+        }
+
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 224, 255, 0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-title i {
+            color: #00e0ff;
+            filter: drop-shadow(0 0 5px rgba(0, 224, 255, 0.7));
+        }
+
+        .panel-content {
+            line-height: 1.7;
+            font-size: 1.1rem;
+            color: #d1d5db;
+        }
+
+        .panel-content p {
+            margin-bottom: 20px;
+        }
+
+        /* Blockchain Visualization */
+        .blockchain-viz {
+            background: rgba(10, 15, 43, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid rgba(0, 224, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 224, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blockchain-viz::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 224, 255, 0.05) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .blockchain-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .block {
+            background: linear-gradient(135deg, rgba(0, 224, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid rgba(0, 224, 255, 0.5);
+            border-radius: 12px;
+            padding: 25px;
+            width: 80%;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0, 224, 255, 0.2);
+        }
+
+        .block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 224, 255, 0.3);
+        }
+
+        .block-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 224, 255, 0.3);
+        }
+
+        .block-number {
+            font-weight: bold;
+            color: #00e0ff;
+            font-size: 1.2rem;
+        }
+
+        .block-hash {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #ff00ff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .block-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .transaction {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #ffff00;
+            font-size: 0.9rem;
+        }
+
+        .chain-link {
+            height: 30px;
+            width: 4px;
+            background: linear-gradient(to bottom, #00e0ff, #ff00ff);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .chain-link::before, .chain-link::after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #00e0ff;
+        }
+
+        .chain-link::before {
+            top: -10px;
+            box-shadow: 0 0 10px #00e0ff;
+        }
+
+        .chain-link::after {
+            bottom: -10px;
+            background: #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* Consensus Mechanisms */
+        .consensus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .consensus-card {
+            background: linear-gradient(135deg, rgba(10, 15, 43, 0.8), rgba(26, 31, 74, 0.8));
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .consensus-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00e0ff, #ff00ff);
+        }
+
+        .consensus-card.pow {
+            border-color: #ff5500;
+        }
+
+        .consensus-card.pos {
+            border-color: #00e0ff;
+        }
+
+        .consensus-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .consensus-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pow .consensus-icon { color: #ff5500; }
+        .pos .consensus-icon { color: #00e0ff; }
+
+        .consensus-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .consensus-description {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .consensus-pros-cons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .pros, .cons {
+            flex: 1;
+        }
+
+        .pros h4, .cons h4 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid;
+        }
+
+        .pros h4 { color: #00ff88; border-color: #00ff88; }
+        .cons h4 { color: #ff5555; border-color: #ff5555; }
+
+        .pros ul, .cons ul {
+            padding-left: 20px;
+            font-size: 0.9rem;
+        }
+
+        .pros li { color: #a0ffcc; }
+        .cons li { color: #ffaaaa; }
+
+        /* Bitcoin vs Ethereum */
+        .crypto-comparison {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .crypto-card {
+            flex: 1;
+            background: rgba(10, 15, 43, 0.8);
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crypto-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent 70%);
+            z-index: 0;
+        }
+
+        .crypto-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .crypto-card.bitcoin {
+            border-color: #f7931a;
+            box-shadow: 0 0 20px rgba(247, 147, 26, 0.3);
+        }
+
+        .crypto-card.ethereum {
+            border-color: #627eea;
+            box-shadow: 0 0 20px rgba(98, 126, 234, 0.3);
+        }
+
+        .crypto-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .crypto-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .crypto-icon {
+            font-size: 2.5rem;
+        }
+
+        .bitcoin .crypto-icon { color: #f7931a; }
+        .ethereum .crypto-icon { color: #627eea; }
+
+        .crypto-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .crypto-tagline {
+            font-style: italic;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .crypto-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .detail {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: #a0a0ff;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* Wallet Security */
+        .wallet-security {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .wallet-type {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(10, 15, 43, 0.8), rgba(26, 31, 74, 0.8));
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(0, 224, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .wallet-type:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 224, 255, 0.2);
+        }
+
+        .wallet-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #00e0ff;
+        }
+
+        .wallet-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .wallet-description {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .security-meter {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .security-level {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .hot-wallet .security-level {
+            width: 40%;
+            background: linear-gradient(90deg, #ff5500, #ffaa00);
+        }
+
+        .cold-wallet .security-level {
+            width: 90%;
+            background: linear-gradient(90deg, #00e0ff, #0088ff);
+        }
+
+        /* Layer Comparison */
+        .layer-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .layer {
+            background: linear-gradient(135deg, rgba(10, 15, 43, 0.8), rgba(26, 31, 74, 0.8));
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .layer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .layer > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .layer.l1 {
+            border-color: #ff00ff;
+        }
+
+        .layer.l2 {
+            border-color: #00e0ff;
+        }
+
+        .layer:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .layer-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .l1 .layer-icon { color: #ff00ff; }
+        .l2 .layer-icon { color: #00e0ff; }
+
+        .layer-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .layer-description {
+            color: #cbd5e1;
+            margin-bottom: 15px;
+        }
+
+        .layer-examples {
+            font-size: 0.9rem;
+            color: #a0a0ff;
+            margin-top: 15px;
+        }
+
+        /* Navigation Buttons */
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px 0;
+            border-top: 1px solid rgba(0, 224, 255, 0.3);
+            border-bottom: 1px solid rgba(0, 224, 255, 0.3);
+        }
+
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(90deg, rgba(0, 224, 255, 0.2), rgba(255, 0, 255, 0.2));
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 224, 255, 0.5);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 224, 255, 0.3);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 224, 255, 0.5);
+            background: linear-gradient(90deg, rgba(0, 224, 255, 0.3), rgba(255, 0, 255, 0.3));
+        }
+
+        .nav-button.home {
+            background: linear-gradient(90deg, rgba(255, 255, 0, 0.2), rgba(255, 165, 0, 0.2));
+            border: 1px solid rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+        }
+
+        .nav-button.home:hover {
+            background: linear-gradient(90deg, rgba(255, 255, 0, 0.3), rgba(255, 165, 0, 0.3));
+            box-shadow: 0 10px 25px rgba(255, 255, 0, 0.5);
+        }
+
+        .nav-button.prev {
+            background: linear-gradient(90deg, rgba(255, 0, 255, 0.2), rgba(128, 0, 128, 0.2));
+            border: 1px solid rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .nav-button.prev:hover {
+            background: linear-gradient(90deg, rgba(255, 0, 255, 0.3), rgba(128, 0, 128, 0.3));
+            box-shadow: 0 10px 25px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Next Level Button */
+        .next-level {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(0, 224, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border-radius: 16px;
+            border: 2px solid rgba(0, 224, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-level::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .next-level:hover::before {
+            left: 100%;
+        }
+
+        .next-level h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #00e0ff;
+        }
+
+        .next-level p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .next-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #00e0ff, #ff00ff);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 224, 255, 0.5);
+        }
+
+        .next-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 224, 255, 0.7);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 70px;
+                border-right: none;
+                border-bottom: 1px solid #00e0ff;
+            }
+            
+            .sidebar.collapsed {
+                width: 100%;
+                height: 70px;
+            }
+            
+            .sidebar:not(.collapsed) {
+                height: 100vh;
+                position: fixed;
+                z-index: 100;
+            }
+            
+            .content {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .crypto-comparison, .wallet-security {
+                flex-direction: column;
+            }
+            
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-button {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .consensus-grid, .layer-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-header h1 {
+                font-size: 2rem;
+            }
+            
+            .block {
+                width: 95%;
+            }
+            
+            .crypto-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar / Outline -->
+        <div class="sidebar collapsed" id="sidebar">
+            <div class="menu-toggle" id="menuToggle">
+                <div class="menu-dots">•••</div>
+            </div>
+            
+            <div class="outline-title">
+                <h2><i class="fas fa-cogs"></i> Engine Room Outline</h2>
+            </div>
+            
+            <ul class="outline-list">
+                <li class="outline-item active" data-panel="intro">
+                    <i class="fas fa-microchip"></i>
+                    <span>Blockchain Mechanics</span>
+                </li>
+                <li class="outline-item" data-panel="consensus">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Consensus Mechanisms</span>
+                </li>
+                <li class="outline-item" data-panel="bitcoin">
+                    <i class="fab fa-bitcoin"></i>
+                    <span>Bitcoin: Digital Gold</span>
+                </li>
+                <li class="outline-item" data-panel="ethereum">
+                    <i class="fab fa-ethereum"></i>
+                    <span>Ethereum Revolution</span>
+                </li>
+                <li class="outline-item" data-panel="wallets">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallets & Security</span>
+                </li>
+                <li class="outline-item" data-panel="layers">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Layers & Scaling</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="content">
+            <div class="content-header">
+                <h1>The Engine Room: Blockchain & Crypto Primitives</h1>
+                <p>How Web3 Works Under the Hood</p>
+                <div class="level-badge">Level 2: Technical Foundations</div>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <a href="C:\Users\Dell\Downloads\Defi\Defi1.html" class="nav-button prev">
+                    <i class="fas fa-arrow-left"></i> Previous: Level 1
+                </a>
+                <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button home">
+                    <i class="fas fa-home"></i> Return Home
+                </a>
+            </div>
+            
+            <!-- Introduction Panel -->
+            <div class="content-panel active" id="intro">
+                <h2 class="panel-title"><i class="fas fa-microchip"></i> Blockchain Mechanics</h2>
+                <div class="panel-content">
+                    <p>Welcome to the engine room of Web3. Here we'll explore the core technologies that power decentralized systems. A blockchain is a distributed, immutable ledger that records transactions in a secure, transparent way without central authority.</p>
+                    
+                    <p>At its heart, blockchain technology solves the "double-spend problem" without needing a trusted intermediary. It does this through a combination of cryptography, distributed networks, and consensus mechanisms.</p>
+                    
+                    <div class="blockchain-viz">
+                        <h3 style="color: #00e0ff; margin-bottom: 30px; text-align: center;">How Blocks Form a Chain</h3>
+                        
+                        <div class="blockchain-container">
+                            <div class="block">
+                                <div class="block-header">
+                                    <div class="block-number">Block #1</div>
+                                    <div class="block-hash">0000a1b2c3d4...</div>
+                                </div>
+                                <div class="block-data">
+                                    <div class="transaction">Alice → Bob: 5 BTC</div>
+                                    <div class="transaction">Charlie → Dave: 3 BTC</div>
+                                    <div class="transaction">Eve → Frank: 7 BTC</div>
+                                </div>
+                            </div>
+                            
+                            <div class="chain-link"></div>
+                            
+                            <div class="block">
+                                <div class="block-header">
+                                    <div class="block-number">Block #2</div>
+                                    <div class="block-hash">0000e5f6g7h8...</div>
+                                </div>
+                                <div class="block-data">
+                                    <div class="transaction">Bob → Charlie: 2 BTC</div>
+                                    <div class="transaction">Dave → Eve: 4 BTC</div>
+                                </div>
+                            </div>
+                            
+                            <div class="chain-link"></div>
+                            
+                            <div class="block">
+                                <div class="block-header">
+                                    <div class="block-number">Block #3</div>
+                                    <div class="block-hash">0000i9j0k1l2...</div>
+                                </div>
+                                <div class="block-data">
+                                    <div class="transaction">Frank → Alice: 1 BTC</div>
+                                    <div class="transaction">Eve → Bob: 6 BTC</div>
+                                    <div class="transaction">Charlie → Dave: 3 BTC</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(0, 224, 255, 0.1); border-radius: 12px; border-left: 4px solid #00e0ff;">
+                            <h4 style="color: #00e0ff; margin-bottom: 10px;">Key Blockchain Properties:</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                                <div>
+                                    <h5 style="color: #ff00ff;">Decentralized</h5>
+                                    <p style="font-size: 0.9rem;">No single entity controls the network; copies exist on thousands of computers worldwide.</p>
+                                </div>
+                                <div>
+                                    <h5 style="color: #ffff00;">Immutable</h5>
+                                    <p style="font-size: 0.9rem;">Once recorded, data cannot be altered without consensus from the network.</p>
+                                </div>
+                                <div>
+                                    <h5 style="color: #00ff88;">Transparent</h5>
+                                    <p style="font-size: 0.9rem;">All transactions are publicly visible while protecting user identities.</p>
+                                </div>
+                                <div>
+                                    <h5 style="color: #00e0ff;">Secure</h5>
+                                    <p style="font-size: 0.9rem;">Cryptography ensures that only owners can transfer their assets.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>Each block contains a cryptographic hash of the previous block, creating a chain that makes tampering virtually impossible. To alter a single transaction, an attacker would need to recompute all subsequent blocks and control more than 50% of the network's computing power.</p>
+                    
+                    <p>This fundamental architecture enables trustless transactions and forms the foundation for all Web3 applications, including DeFi.</p>
+                </div>
+            </div>
+            
+            <!-- Consensus Panel -->
+            <div class="content-panel" id="consensus">
+                <h2 class="panel-title"><i class="fas fa-balance-scale"></i> Consensus Mechanisms</h2>
+                <div class="panel-content">
+                    <p>Consensus mechanisms are the protocols that allow distributed networks to agree on the state of the blockchain. They're the "rules of the game" that prevent fraud and ensure all participants see the same transaction history.</p>
+                    
+                    <div class="consensus-grid">
+                        <div class="consensus-card pow">
+                            <div class="consensus-icon"><i class="fas fa-hammer"></i></div>
+                            <h3 class="consensus-title">Proof of Work (PoW)</h3>
+                            <p class="consensus-description">Used by Bitcoin, this mechanism requires miners to solve complex mathematical puzzles to validate transactions and create new blocks. The first to solve the puzzle gets to add the block and receive a reward.</p>
+                            
+                            <div class="consensus-pros-cons">
+                                <div class="pros">
+                                    <h4>Strengths</h4>
+                                    <ul>
+                                        <li>Highly secure</li>
+                                        <li>Battle-tested (Bitcoin)</li>
+                                        <li>Truly decentralized</li>
+                                    </ul>
+                                </div>
+                                <div class="cons">
+                                    <h4>Limitations</h4>
+                                    <ul>
+                                        <li>Energy intensive</li>
+                                        <li>Slower transactions</li>
+                                        <li>Hardware centralization risk</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="consensus-card pos">
+                            <div class="consensus-icon"><i class="fas fa-coins"></i></div>
+                            <h3 class="consensus-title">Proof of Stake (PoS)</h3>
+                            <p class="consensus-description">Used by Ethereum 2.0 and others, validators "stake" their cryptocurrency as collateral to validate transactions. The chance to validate is proportional to the amount staked.</p>
+                            
+                            <div class="consensus-pros-cons">
+                                <div class="pros">
+                                    <h4>Strengths</h4>
+                                    <ul>
+                                        <li>Energy efficient</li>
+                                        <li>Faster transactions</li>
+                                        <li>Lower barriers to entry</li>
+                                    </ul>
+                                </div>
+                                <div class="cons">
+                                    <h4>Limitations</h4>
+                                    <ul>
+                                        <li>"Rich get richer" risk</li>
+                                        <li>Less battle-tested</li>
+                                        <li>Complex implementation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 0, 255, 0.1); border-radius: 12px; border-left: 4px solid #ff00ff;">
+                        <h4 style="color: #ff00ff; margin-bottom: 15px;">Other Consensus Mechanisms:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                            <div>
+                                <h5 style="color: #00e0ff;">Delegated Proof of Stake (DPoS)</h5>
+                                <p>Token holders vote for delegates who validate transactions on their behalf. Used by EOS, TRON.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #ffff00;">Proof of Authority (PoA)</h5>
+                                <p>Approved validators (usually known entities) validate transactions. Used in private/enterprise blockchains.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #00ff88;">Proof of History (PoH)</h5>
+                                <p>Creates a historical record to prove that an event occurred at a specific moment. Used by Solana.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>The choice of consensus mechanism affects security, decentralization, speed, and energy consumption - all critical factors for DeFi applications that require fast, secure, and reliable transaction processing.</p>
+                </div>
+            </div>
+            
+            <!-- Bitcoin Panel -->
+            <div class="content-panel" id="bitcoin">
+                <h2 class="panel-title"><i class="fab fa-bitcoin"></i> Bitcoin: Digital Gold</h2>
+                <div class="panel-content">
+                    <p>Bitcoin, created by the pseudonymous Satoshi Nakamoto in 2008, was the first successful implementation of blockchain technology. It introduced the world to the concept of decentralized digital currency.</p>
+                    
+                    <div class="crypto-comparison">
+                        <div class="crypto-card bitcoin">
+                            <div class="crypto-header">
+                                <div class="crypto-icon"><i class="fab fa-bitcoin"></i></div>
+                                <div>
+                                    <h3 class="crypto-name">Bitcoin</h3>
+                                    <div style="font-size: 0.9rem; color: #f7931a;">BTC</div>
+                                </div>
+                            </div>
+                            
+                            <p class="crypto-tagline">"A Peer-to-Peer Electronic Cash System"</p>
+                            
+                            <div class="crypto-details">
+                                <div class="detail">
+                                    <div class="detail-label">Created</div>
+                                    <div class="detail-value">2009</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Creator</div>
+                                    <div class="detail-value">Satoshi Nakamoto</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Consensus</div>
+                                    <div class="detail-value">Proof of Work</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Max Supply</div>
+                                    <div class="detail-value">21 Million</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Block Time</div>
+                                    <div class="detail-value">~10 minutes</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Primary Use</div>
+                                    <div class="detail-value">Store of Value</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 25px; padding: 15px; background: rgba(247, 147, 26, 0.1); border-radius: 8px;">
+                                <h4 style="color: #f7931a; margin-bottom: 10px;">Key Innovations:</h4>
+                                <ul style="padding-left: 20px;">
+                                    <li>Solved the double-spend problem without a central authority</li>
+                                    <li>Introduced the concept of "digital scarcity"</li>
+                                    <li>Created the first working blockchain</li>
+                                    <li>Proved decentralized consensus is possible</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(247, 147, 26, 0.1); border-radius: 12px; border-left: 4px solid #f7931a;">
+                        <h4 style="color: #f7931a; margin-bottom: 15px;">Bitcoin's Role in Web3:</h4>
+                        <p>While Bitcoin itself has limited programmability (it's primarily a store of value and medium of exchange), it laid the essential groundwork for Web3:</p>
+                        <ol style="padding-left: 25px; margin-top: 15px;">
+                            <li><strong>Proof of Concept:</strong> Demonstrated that decentralized digital currency could work</li>
+                            <li><strong>Security Model:</strong> Established the PoW security model that many chains still use</li>
+                            <li><strong>Digital Gold Narrative:</strong> Created the first widely recognized "crypto asset" class</li>
+                            <li><strong>Wrapped Bitcoin (WBTC):</strong> Bitcoin can be tokenized on other chains to participate in DeFi ecosystems</li>
+                        </ol>
+                    </div>
+                    
+                    <p>Bitcoin's primary limitation for DeFi is its lack of programmability. While it excels as "digital gold," its scripting language is intentionally limited for security reasons. This limitation inspired the creation of Ethereum and the explosion of DeFi applications.</p>
+                </div>
+            </div>
+            
+            <!-- Ethereum Panel -->
+            <div class="content-panel" id="ethereum">
+                <h2 class="panel-title"><i class="fab fa-ethereum"></i> Ethereum & The Smart Contract Revolution</h2>
+                <div class="panel-content">
+                    <p>Ethereum, proposed by Vitalik Buterin in 2013 and launched in 2015, took Bitcoin's innovation and added a crucial feature: programmability. Ethereum introduced smart contracts - self-executing code that runs on the blockchain.</p>
+                    
+                    <div class="crypto-comparison">
+                        <div class="crypto-card ethereum">
+                            <div class="crypto-header">
+                                <div class="crypto-icon"><i class="fab fa-ethereum"></i></div>
+                                <div>
+                                    <h3 class="crypto-name">Ethereum</h3>
+                                    <div style="font-size: 0.9rem; color: #627eea;">ETH</div>
+                                </div>
+                            </div>
+                            
+                            <p class="crypto-tagline">"A Global, Decentralized Platform for Money and New Kinds of Applications"</p>
+                            
+                            <div class="crypto-details">
+                                <div class="detail">
+                                    <div class="detail-label">Launched</div>
+                                    <div class="detail-value">2015</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Creator</div>
+                                    <div class="detail-value">Vitalik Buterin</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Consensus</div>
+                                    <div class="detail-value">Proof of Stake</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Supply</div>
+                                    <div class="detail-value">No Hard Cap</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Block Time</div>
+                                    <div class="detail-value">~12 seconds</div>
+                                </div>
+                                <div class="detail">
+                                    <div class="detail-label">Primary Use</div>
+                                    <div class="detail-value">Smart Contracts</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 25px; padding: 15px; background: rgba(98, 126, 234, 0.1); border-radius: 8px;">
+                                <h4 style="color: #627eea; margin-bottom: 10px;">Key Innovations:</h4>
+                                <ul style="padding-left: 20px;">
+                                    <li>Introduced Turing-complete smart contracts</li>
+                                    <li>Created the ERC-20 token standard (fungible tokens)</li>
+                                    <li>Pioneered decentralized applications (dApps)</li>
+                                    <li>Became the foundation for DeFi and NFTs</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(98, 126, 234, 0.1); border-radius: 12px; border-left: 4px solid #627eea;">
+                        <h4 style="color: #627eea; margin-bottom: 15px;">Smart Contracts: The Game Changer</h4>
+                        <p>Smart contracts are programs stored on the blockchain that run when predetermined conditions are met. They automate the execution of agreements without intermediaries.</p>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
+                                <h5 style="color: #00e0ff;">How They Work</h5>
+                                <p>Code is deployed to the blockchain → Users interact with it → Code executes automatically when conditions are met → Results are recorded on-chain.</p>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
+                                <h5 style="color: #ff00ff;">Key Properties</h5>
+                                <p>Deterministic (same inputs = same outputs), Immutable (can't be changed after deployment), Transparent (code is publicly visible).</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>Ethereum's programmability made it the perfect foundation for DeFi. Developers could now create complex financial applications like decentralized exchanges, lending protocols, and derivatives - all running autonomously on the blockchain without banks or brokers.</p>
+                    
+                    <p>The Ethereum Virtual Machine (EVM) became the standard runtime environment for smart contracts, and its compatibility led to the creation of numerous EVM-compatible chains, creating a vast ecosystem of interoperable DeFi applications.</p>
+                </div>
+            </div>
+            
+            <!-- Wallets Panel -->
+            <div class="content-panel" id="wallets">
+                <h2 class="panel-title"><i class="fas fa-wallet"></i> Wallets, Keys, and Security</h2>
+                <div class="panel-content">
+                    <p>Crypto wallets are your gateway to Web3. Unlike traditional wallets that store currency, crypto wallets store cryptographic keys that prove ownership of your assets on the blockchain.</p>
+                    
+                    <div class="wallet-security">
+                        <div class="wallet-type hot-wallet">
+                            <div class="wallet-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <h3 class="wallet-title">Hot Wallets</h3>
+                            <p class="wallet-description">Connected to the internet. Convenient for frequent transactions but more vulnerable to attacks.</p>
+                            
+                            <div class="security-meter">
+                                <div class="security-level"></div>
+                            </div>
+                            
+                            <div style="font-size: 0.9rem; margin: 15px 0;">
+                                <div style="color: #ffaa00;">Security: Medium</div>
+                                <div style="color: #00e0ff;">Convenience: High</div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; font-size: 0.9rem;">
+                                <strong>Examples:</strong> MetaMask, Coinbase Wallet, Trust Wallet
+                            </div>
+                        </div>
+                        
+                        <div class="wallet-type cold-wallet">
+                            <div class="wallet-icon"><i class="fas fa-shield-alt"></i></div>
+                            <h3 class="wallet-title">Cold Wallets</h3>
+                            <p class="wallet-description">Offline storage. Maximum security for long-term holdings but less convenient for frequent use.</p>
+                            
+                            <div class="security-meter">
+                                <div class="security-level"></div>
+                            </div>
+                            
+                            <div style="font-size: 0.9rem; margin: 15px 0;">
+                                <div style="color: #00ff88;">Security: High</div>
+                                <div style="color: #ff5555;">Convenience: Low</div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; font-size: 0.9rem;">
+                                <strong>Examples:</strong> Ledger, Trezor, SafePal
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; padding: 25px; background: rgba(0, 224, 255, 0.1); border-radius: 12px; border-left: 4px solid #00e0ff;">
+                        <h4 style="color: #00e0ff; margin-bottom: 15px;">Understanding Cryptographic Keys</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ff00ff;">Private Key</h5>
+                                <p>A secret 256-bit number that proves ownership. <strong>Never share this!</strong> It's used to sign transactions.</p>
+                                <div style="font-family: monospace; font-size: 0.8rem; color: #ff5555; margin-top: 10px; word-break: break-all;">
+                                    0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ffff00;">Public Key</h5>
+                                <p>Derived from the private key, this is your public identity on the blockchain. It can be shared safely.</p>
+                                <div style="font-family: monospace; font-size: 0.8rem; color: #ffff00; margin-top: 10px; word-break: break-all;">
+                                    0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00ff88;">Seed Phrase</h5>
+                                <p>12-24 human-readable words that can regenerate your private keys. Store this securely offline.</p>
+                                <div style="font-size: 0.8rem; color: #a0ffcc; margin-top: 10px;">
+                                    example abandon ability abandon ability...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 0, 0, 0.1); border-radius: 12px; border-left: 4px solid #ff5555;">
+                        <h4 style="color: #ff5555; margin-bottom: 15px;">Critical Security Practices</h4>
+                        <ul style="padding-left: 25px;">
+                            <li><strong>Never share your private keys or seed phrase</strong> with anyone</li>
+                            <li>Use hardware wallets for significant holdings</li>
+                            <li>Enable two-factor authentication wherever possible</li>
+                            <li>Verify contract addresses before interacting with DeFi protocols</li>
+                            <li>Be cautious of phishing sites (always check URLs)</li>
+                            <li>Consider using multi-signature wallets for added security</li>
+                        </ul>
+                    </div>
+                    
+                    <p>Your wallet is more than just a place to store crypto - it's your identity in Web3. Proper key management is essential for safely participating in DeFi and protecting your assets from theft or loss.</p>
+                </div>
+            </div>
+            
+            <!-- Layers Panel -->
+            <div class="content-panel" id="layers">
+                <h2 class="panel-title"><i class="fas fa-layer-group"></i> Layers & Scaling Solutions</h2>
+                <div class="panel-content">
+                    <p>As blockchain adoption grows, scalability becomes critical. The "Blockchain Trilemma" describes the challenge of achieving decentralization, security, and scalability simultaneously. Most blockchains optimize for two at the expense of the third.</p>
+                    
+                    <div class="layer-comparison">
+                        <div class="layer l1">
+                            <div class="layer-icon"><i class="fas fa-layer-group"></i></div>
+                            <h3 class="layer-title">Layer 1</h3>
+                            <p class="layer-description">The base blockchain layer (e.g., Ethereum, Bitcoin, Solana). Handles consensus, data availability, and execution.</p>
+                            <div class="layer-examples">
+                                <strong>Examples:</strong> Ethereum, Bitcoin, Solana, Cardano
+                            </div>
+                        </div>
+                        
+                        <div class="layer l2">
+                            <div class="layer-icon"><i class="fas fa-bolt"></i></div>
+                            <h3 class="layer-title">Layer 2</h3>
+                            <p class="layer-description">Scaling solutions built on top of Layer 1. They process transactions off-chain and settle batches on Layer 1.</p>
+                            <div class="layer-examples">
+                                <strong>Examples:</strong> Optimism, Arbitrum, Polygon, zkSync
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(0, 224, 255, 0.1); border-radius: 12px; border-left: 4px solid #00e0ff;">
+                        <h4 style="color: #00e0ff; margin-bottom: 15px;">Why Scaling Matters for DeFi</h4>
+                        <p>Early DeFi on Ethereum faced significant challenges during periods of high demand:</p>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
+                                <h5 style="color: #ff5555;">High Gas Fees</h5>
+                                <p>Transaction costs could exceed $100 during network congestion, making small transactions uneconomical.</p>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
+                                <h5 style="color: #ffaa00;">Slow Transactions</h5>
+                                <p>Network congestion led to confirmation times of minutes or even hours.</p>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
+                                <h5 style="color: #ffff00;">Limited Accessibility</h5>
+                                <p>High costs priced out users with smaller amounts to invest or transact.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 0, 255, 0.1); border-radius: 12px; border-left: 4px solid #ff00ff;">
+                        <h4 style="color: #ff00ff; margin-bottom: 15px;">Layer 2 Scaling Approaches</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00e0ff;">Optimistic Rollups</h5>
+                                <p>Assume transactions are valid by default, with a challenge period for fraud proofs. Faster but with longer withdrawal times.</p>
+                                <div style="font-size: 0.9rem; color: #a0a0ff; margin-top: 10px;">
+                                    <strong>Examples:</strong> Optimism, Arbitrum
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ffff00;">Zero-Knowledge Rollups</h5>
+                                <p>Use cryptographic proofs to validate transactions off-chain. More complex but with instant finality and better privacy.</p>
+                                <div style="font-size: 0.9rem; color: #ffffaa; margin-top: 10px;">
+                                    <strong>Examples:</strong> zkSync, StarkNet, Polygon zkEVM
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00ff88;">Sidechains</h5>
+                                <p>Independent blockchains that run parallel to the main chain with their own consensus mechanisms and bridges for asset transfer.</p>
+                                <div style="font-size: 0.9rem; color: #a0ffcc; margin-top: 10px;">
+                                    <strong>Examples:</strong> Polygon PoS, Ronin
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>For DeFi users, Layer 2 solutions offer dramatically lower fees (often less than $0.01 per transaction) and faster confirmations while maintaining the security of Ethereum's base layer. This has enabled micro-transactions, improved user experience, and opened DeFi to a much broader audience.</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons (Bottom) -->
+            <div class="navigation-buttons">
+                <a href="C:\Users\Dell\Downloads\Defi\Defi1.html" class="nav-button prev">
+                    <i class="fas fa-arrow-left"></i> Previous: Level 1
+                </a>
+                <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button home">
+                    <i class="fas fa-home"></i> Return Home
+                </a>
+            </div>
+            
+            <!-- Next Level Section -->
+            <div class="next-level">
+                <h3><i class="fas fa-arrow-right"></i> Ready for the Next Level?</h3>
+                <p>You've now mastered the technical foundations of Web3. You understand how blockchains work, the role of consensus mechanisms, the evolution from Bitcoin to Ethereum, wallet security, and scaling solutions.</p>
+                <p>In <strong>Level 3: The Financial Layer</strong>, we'll dive into DeFi itself - exploring protocols, yield mechanisms, and how to safely navigate the decentralized financial ecosystem.</p>
+                
+                <a href="C:\Users\Dell\Downloads\Defi\Defi3.html" class="next-button" id="nextLevelBtn">
+                    Continue to Level 3: DeFi Deep Dive
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const outlineItems = document.querySelectorAll('.outline-item');
+        const contentPanels = document.querySelectorAll('.content-panel');
+        const nextLevelBtn = document.getElementById('nextLevelBtn');
+        
+        // Toggle sidebar collapse/expand
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            
+            // Update menu dots icon
+            const dots = menuToggle.querySelector('.menu-dots');
+            if (sidebar.classList.contains('collapsed')) {
+                dots.textContent = '•••';
+            } else {
+                dots.textContent = '←';
+            }
+        });
+        
+        // Handle outline item clicks
+        outlineItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Get the panel to show
+                const panelId = item.getAttribute('data-panel');
+                
+                // Update active state in outline
+                outlineItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Show the corresponding panel
+                contentPanels.forEach(panel => {
+                    panel.classList.remove('active');
+                    if (panel.id === panelId) {
+                        panel.classList.add('active');
+                    }
+                });
+                
+                // Auto-collapse sidebar on mobile
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.add('collapsed');
+                    menuToggle.querySelector('.menu-dots').textContent = '•••';
+                }
+                
+                // Scroll to top of content
+                document.querySelector('.content').scrollTop = 0;
+            });
+        });
+        
+        // Next level button
+        nextLevelBtn.addEventListener('click', (e) => {
+            // The link will handle navigation, but we can keep the alert if desired
+            // Remove or comment out if you don't want the alert
+            alert('Proceeding to Level 3: DeFi Deep Dive\n\nIn the next level, you will learn about:\n• Stablecoins & DEXs\n• Lending & Borrowing Protocols\n• Yield Farming & Liquidity\n• Risk Management in DeFi');
+        });
+        
+        // Initialize with first panel active
+        document.querySelector('.outline-item[data-panel="intro"]').click();
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate blockchain blocks
+            const blocks = document.querySelectorAll('.block');
+            let delay = 0;
+            blocks.forEach(block => {
+                block.style.opacity = '0';
+                block.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    block.style.transition = 'all 0.5s ease';
+                    block.style.opacity = '1';
+                    block.style.transform = 'translateY(0)';
+                }, delay);
+                
+                delay += 300;
+            });
+            
+            // Animate chain links
+            const links = document.querySelectorAll('.chain-link');
+            links.forEach((link, index) => {
+                setTimeout(() => {
+                    link.style.height = '30px';
+                    link.style.transition = 'height 0.5s ease';
+                }, 500 + (index * 300));
+            });
+            
+            // Add pulsing effect to consensus cards
+            const consensusCards = document.querySelectorAll('.consensus-card');
+            consensusCards.forEach(card => {
+                setInterval(() => {
+                    card.style.boxShadow = card.style.boxShadow.includes('30px') 
+                        ? '0 5px 15px rgba(0, 0, 0, 0.2)' 
+                        : '0 5px 30px rgba(255, 255, 255, 0.1)';
+                }, 2000);
+            });
+            
+            // Add subtle animation to crypto cards
+            const cryptoCards = document.querySelectorAll('.crypto-card');
+            cryptoCards.forEach(card => {
+                setInterval(() => {
+                    const borderColor = card.classList.contains('bitcoin') 
+                        ? 'rgba(247, 147, 26, 0.7)' 
+                        : 'rgba(98, 126, 234, 0.7)';
+                    
+                    card.style.borderColor = card.style.borderColor === borderColor 
+                        ? (card.classList.contains('bitcoin') ? '#f7931a' : '#627eea')
+                        : borderColor;
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

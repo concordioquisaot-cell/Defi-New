@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 & DeFi Mastery: Level 4 - Advanced Navigation & Risk</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0b1e 0%, #15172d 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Left Sidebar - Outline */
+        .sidebar {
+            width: 20%;
+            background: rgba(10, 11, 30, 0.97);
+            border-right: 1px solid #ff4d8d;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+            box-shadow: 5px 0 15px rgba(255, 77, 141, 0.2);
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .menu-toggle {
+            padding: 20px;
+            background: rgba(10, 11, 30, 0.9);
+            border-bottom: 1px solid #ff4d8d;
+            display: flex;
+            justify-content: flex-end;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(20, 21, 40, 0.9);
+        }
+
+        .menu-dots {
+            font-size: 24px;
+            color: #ff4d8d;
+            text-shadow: 0 0 10px rgba(255, 77, 141, 0.7);
+        }
+
+        .outline-title {
+            padding: 25px 20px 15px;
+            border-bottom: 1px solid #ff4d8d;
+            margin-bottom: 10px;
+        }
+
+        .outline-title h2 {
+            font-size: 1.4rem;
+            color: #ff4d8d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 5px rgba(255, 77, 141, 0.5);
+        }
+
+        .outline-list {
+            list-style: none;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0 0 20px;
+        }
+
+        .outline-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 77, 141, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .outline-item:hover {
+            background: rgba(255, 77, 141, 0.1);
+        }
+
+        .outline-item.active {
+            background: rgba(255, 77, 141, 0.15);
+            border-left: 4px solid #00f0ff;
+        }
+
+        .outline-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: #00f0ff;
+            box-shadow: 0 0 10px #00f0ff;
+        }
+
+        .outline-item i {
+            font-size: 1.2rem;
+            color: #ff4d8d;
+            width: 24px;
+            text-align: center;
+            filter: drop-shadow(0 0 3px rgba(255, 77, 141, 0.7));
+        }
+
+        .outline-item span {
+            font-weight: 500;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar.collapsed .outline-title,
+        .sidebar.collapsed .outline-item span {
+            display: none;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            gap: 20px;
+        }
+        
+        .nav-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: rgba(10, 11, 30, 0.8);
+            border: 1px solid;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            flex: 1;
+            max-width: 300px;
+            justify-content: center;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-button.home {
+            border-color: #9d4edd;
+            background: linear-gradient(90deg, rgba(157, 78, 221, 0.1), rgba(157, 78, 221, 0.2));
+        }
+        
+        .nav-button.prev {
+            border-color: #00f0ff;
+            background: linear-gradient(90deg, rgba(0, 240, 255, 0.1), rgba(0, 240, 255, 0.2));
+        }
+        
+        .nav-button.next {
+            border-color: #ff4d8d;
+            background: linear-gradient(90deg, rgba(255, 77, 141, 0.1), rgba(255, 77, 141, 0.2));
+        }
+        
+        .nav-button i {
+            font-size: 1.2rem;
+        }
+        
+        /* Center the nav buttons */
+        .nav-center {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        /* Main Content Area */
+        .content {
+            width: 80%;
+            padding: 30px;
+            overflow-y: auto;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 77, 141, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 40%),
+                linear-gradient(135deg, #0a0b1e 0%, #15172d 100%);
+            position: relative;
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ff4d8d;
+            position: relative;
+        }
+
+        .content-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #ff4d8d, #00f0ff, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 77, 141, 0.3);
+            position: relative;
+        }
+
+        .content-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff4d8d, #00f0ff, transparent);
+        }
+
+        .content-header .level-badge {
+            display: inline-block;
+            background: rgba(255, 77, 141, 0.15);
+            color: #ff4d8d;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 77, 141, 0.5);
+            box-shadow: 0 0 10px rgba(255, 77, 141, 0.3);
+        }
+
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 77, 141, 0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-title i {
+            color: #ff4d8d;
+            filter: drop-shadow(0 0 5px rgba(255, 77, 141, 0.7));
+        }
+
+        .panel-content {
+            line-height: 1.7;
+            font-size: 1.1rem;
+            color: #d1d5db;
+        }
+
+        .panel-content p {
+            margin-bottom: 20px;
+        }
+
+        /* Advanced Strategy Dashboard */
+        .strategy-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .strategy-card {
+            background: rgba(10, 11, 30, 0.8);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255, 77, 141, 0.3);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff4d8d, #00f0ff);
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 77, 141, 0.2);
+        }
+
+        .strategy-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .strategy-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .strategy-description {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .strategy-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00f0ff;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        /* Derivatives Visualization */
+        .derivatives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .derivative-card {
+            background: linear-gradient(135deg, rgba(10, 11, 30, 0.8), rgba(21, 23, 45, 0.8));
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .derivative-card.perpetual {
+            border-color: #ff4d8d;
+        }
+
+        .derivative-card.options {
+            border-color: #00f0ff;
+        }
+
+        .derivative-card.synthetics {
+            border-color: #ffd700;
+        }
+
+        .derivative-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .derivative-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .derivative-icon {
+            font-size: 2.5rem;
+        }
+
+        .perpetual .derivative-icon { color: #ff4d8d; }
+        .options .derivative-icon { color: #00f0ff; }
+        .synthetics .derivative-icon { color: #ffd700; }
+
+        .derivative-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .derivative-type {
+            font-style: italic;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .derivative-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .derivative-detail {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-label {
+            color: #a0a0ff;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* Risk Matrix */
+        .risk-matrix {
+            background: rgba(10, 11, 30, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 77, 141, 0.3);
+            box-shadow: 0 0 20px rgba(255, 77, 141, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .risk-matrix::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 77, 141, 0.05) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .matrix-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .risk-category {
+            background: rgba(21, 23, 45, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid;
+            transition: all 0.3s;
+        }
+
+        .risk-category.contract {
+            border-left-color: #ff4d8d;
+        }
+
+        .risk-category.oracle {
+            border-left-color: #00f0ff;
+        }
+
+        .risk-category.liquidity {
+            border-left-color: #ffd700;
+        }
+
+        .risk-category.systemic {
+            border-left-color: #9d4edd;
+        }
+
+        .risk-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .risk-category-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .risk-examples {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .risk-examples li {
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+        }
+
+        /* NFT-Fi Section */
+        .nftfi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .nftfi-card {
+            background: linear-gradient(135deg, rgba(10, 11, 30, 0.8), rgba(21, 23, 45, 0.8));
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(157, 78, 221, 0.5);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nftfi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(157, 78, 221, 0.1), transparent 70%);
+            z-index: 0;
+        }
+
+        .nftfi-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .nftfi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.2);
+        }
+
+        .nftfi-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nftfi-icon {
+            font-size: 2.5rem;
+            color: #9d4edd;
+        }
+
+        .nftfi-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .nftfi-description {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .nftfi-examples {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .nftfi-example {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .example-title {
+            font-size: 0.9rem;
+            color: #a0a0ff;
+            margin-bottom: 5px;
+        }
+
+        .example-data {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* DAO Treasury Management */
+        .dao-treasury {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .treasury-side {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(10, 11, 30, 0.8), rgba(21, 23, 45, 0.8));
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(0, 240, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .treasury-side:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 240, 255, 0.2);
+        }
+
+        .treasury-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #00f0ff;
+        }
+
+        .treasury-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .treasury-description {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .treasury-stats {
+            display: inline-block;
+            background: rgba(0, 240, 255, 0.15);
+            color: #00f0ff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 15px;
+        }
+
+        /* On-Chain Analytics */
+        .analytics-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .analytics-card {
+            background: rgba(10, 11, 30, 0.8);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analytics-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffd700, #ff4d8d);
+        }
+
+        .analytics-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+        }
+
+        .analytics-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .analytics-icon {
+            font-size: 2.5rem;
+            color: #ffd700;
+        }
+
+        .analytics-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .analytics-description {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .analytics-features {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .analytics-features li {
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+        }
+
+        /* Leverage Visualization */
+        .leverage-viz {
+            background: rgba(10, 11, 30, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 77, 141, 0.3);
+            box-shadow: 0 0 20px rgba(255, 77, 141, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leverage-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .leverage-levels {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .leverage-level {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            width: 22%;
+            transition: all 0.3s;
+            border: 2px solid;
+        }
+
+        .leverage-level:hover {
+            transform: scale(1.05);
+        }
+
+        .level-1x { border-color: #00f0ff; background: rgba(0, 240, 255, 0.1); }
+        .level-3x { border-color: #ffd700; background: rgba(255, 215, 0, 0.1); }
+        .level-5x { border-color: #ff4d8d; background: rgba(255, 77, 141, 0.1); }
+        .level-10x { border-color: #9d4edd; background: rgba(157, 78, 221, 0.1); }
+
+        .leverage-multiplier {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .leverage-outcome {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .profit { color: #00ff88; }
+        .loss { color: #ff5555; }
+
+        .leverage-warning {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 77, 141, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid #ff4d8d;
+        }
+
+        /* Next Level Button */
+        .next-level {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 77, 141, 0.1), rgba(0, 240, 255, 0.1));
+            border-radius: 16px;
+            border: 2px solid rgba(255, 77, 141, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-level::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .next-level:hover::before {
+            left: 100%;
+        }
+
+        .next-level h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ff4d8d;
+        }
+
+        .next-level p {
+            margin-bottom: 20px;
+            color: #d1d5db;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .next-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff4d8d, #00f0ff);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 77, 141, 0.5);
+        }
+
+        .next-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 77, 141, 0.7);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 70px;
+                border-right: none;
+                border-bottom: 1px solid #ff4d8d;
+            }
+            
+            .sidebar.collapsed {
+                width: 100%;
+                height: 70px;
+            }
+            
+            .sidebar:not(.collapsed) {
+                height: 100vh;
+                position: fixed;
+                z-index: 100;
+            }
+            
+            .content {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .dao-treasury, .leverage-levels {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-button {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .strategy-dashboard, .derivatives-grid, .nftfi-grid, .analytics-showcase {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-header h1 {
+                font-size: 2rem;
+            }
+            
+            .matrix-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .nftfi-examples {
+                grid-template-columns: 1fr;
+            }
+            
+            .leverage-levels {
+                flex-wrap: wrap;
+            }
+            
+            .leverage-level {
+                width: 48%;
+                margin-bottom: 15px;
+            }
+            
+            .nav-center {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar / Outline -->
+        <div class="sidebar collapsed" id="sidebar">
+            <div class="menu-toggle" id="menuToggle">
+                <div class="menu-dots">•••</div>
+            </div>
+            
+            <div class="outline-title">
+                <h2><i class="fas fa-chess-knight"></i> Advanced Navigation</h2>
+            </div>
+            
+            <ul class="outline-list">
+                <li class="outline-item active" data-panel="intro">
+                    <i class="fas fa-chess"></i>
+                    <span>Advanced Yield Strategies</span>
+                </li>
+                <li class="outline-item" data-panel="derivatives">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>DeFi Derivatives</span>
+                </li>
+                <li class="outline-item" data-panel="leverage">
+                    <i class="fas fa-balance-scale-right"></i>
+                    <span>Leverage & Multipliers</span>
+                </li>
+                <li class="outline-item" data-panel="risks">
+                    <i class="fas fa-radiation"></i>
+                    <span>Comprehensive Risk Framework</span>
+                </li>
+                <li class="outline-item" data-panel="nftfi">
+                    <i class="fas fa-palette"></i>
+                    <span>NFT-Fi Ecosystem</span>
+                </li>
+                <li class="outline-item" data-panel="dao">
+                    <i class="fas fa-landmark"></i>
+                    <span>DAO Treasury Management</span>
+                </li>
+                <li class="outline-item" data-panel="analytics">
+                    <i class="fas fa-chart-network"></i>
+                    <span>On-Chain Analytics</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="content">
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <a href="C:\Users\Dell\Downloads\Defi\Defi3.html" class="nav-button prev">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Level 3</span>
+                </a>
+                
+                <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button home">
+                    <i class="fas fa-home"></i>
+                    <span>Return to Home</span>
+                </a>
+                
+                <a href="C:\Users\Dell\Downloads\Defi\Defi5.html" class="nav-button next">
+                    <span>Continue to Level 5</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="content-header">
+                <h1>Advanced Navigation & Risk: DeFi Frontier</h1>
+                <p>Strategy, Derivatives, and Comprehensive Risk Management</p>
+                <div class="level-badge">Level 4: Advanced DeFi & Web3 Interactions</div>
+            </div>
+            
+            <!-- Introduction Panel -->
+            <div class="content-panel active" id="intro">
+                <h2 class="panel-title"><i class="fas fa-chess"></i> Advanced Yield Strategies</h2>
+                <div class="panel-content">
+                    <p>Welcome to the frontier of DeFi. Beyond basic yield farming lie sophisticated strategies that can amplify returns—and risks. Advanced yield strategies involve leveraging multiple protocols, optimizing capital efficiency, and navigating complex financial instruments.</p>
+                    
+                    <div class="strategy-dashboard">
+                        <div class="strategy-card">
+                            <div class="strategy-icon" style="color: #ff4d8d;"><i class="fas fa-forward"></i></div>
+                            <h3 class="strategy-title">Leveraged Yield Farming</h3>
+                            <p class="strategy-description">Borrow assets to increase position size in liquidity pools, amplifying both potential returns and impermanent loss risks.</p>
+                            <div class="strategy-stats">
+                                <div class="stat">
+                                    <div class="stat-value">3-10x</div>
+                                    <div class="stat-label">Leverage</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">High</div>
+                                    <div class="stat-label">Risk Level</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-icon" style="color: #00f0ff;"><i class="fas fa-layer-group"></i></div>
+                            <h3 class="strategy-title">Yield Aggregators/Vaults</h3>
+                            <p class="strategy-description">Automated protocols that move funds between strategies to optimize returns, handle compounding, and manage risk.</p>
+                            <div class="strategy-stats">
+                                <div class="stat">
+                                    <div class="stat-value">Auto</div>
+                                    <div class="stat-label">Compounding</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">Medium</div>
+                                    <div class="stat-label">Risk Level</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-icon" style="color: #ffd700;"><i class="fas fa-sync-alt"></i></div>
+                            <h3 class="strategy-title">Cross-Chain Yield</h3>
+                            <p class="strategy-description">Deploy capital across multiple blockchains to access higher yields, arbitrage opportunities, and diversify risk.</p>
+                            <div class="strategy-stats">
+                                <div class="stat">
+                                    <div class="stat-value">Multi</div>
+                                    <div class="stat-label">Chain</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">High</div>
+                                    <div class="stat-label">Complexity</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 77, 141, 0.1); border-radius: 12px; border-left: 4px solid #ff4d8d;">
+                        <h4 style="color: #ff4d8d; margin-bottom: 15px;">Leveraged Yield Farming Example</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00f0ff;">Step 1: Initial Capital</h5>
+                                <p>Start with $10,000 in ETH. Instead of providing liquidity directly, you use it as collateral to borrow stablecoins.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ffd700;">Step 2: Borrow & Leverage</h5>
+                                <p>Borrow $20,000 DAI against your ETH (2x leverage). Now you have $30,000 total ($10k ETH + $20k DAI).</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ff4d8d;">Step 3: Provide Liquidity</h5>
+                                <p>Use the $30,000 to provide ETH/DAI liquidity, earning trading fees and potentially liquidity mining rewards.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #9d4edd;">Step 4: Risk Amplification</h5>
+                                <p>Your position is now 3x leveraged. A 10% price move becomes 30% for you. Both gains and losses are magnified.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(0, 240, 255, 0.1); border-radius: 12px; border-left: 4px solid #00f0ff;">
+                        <h4 style="color: #00f0ff; margin-bottom: 15px;">Yield Aggregators: Yearn Finance Example</h4>
+                        <p>Yearn Finance automates yield farming by:</p>
+                        <ol style="padding-left: 25px; margin-top: 15px;">
+                            <li><strong>Automated Strategy Selection:</strong> Algorithms choose the highest-yielding strategies across DeFi</li>
+                            <li><strong>Gas Optimization:</strong> Batches transactions to reduce costs for all users</li>
+                            <li><strong>Risk Management:</strong> Automatically rebalances or exits risky positions</li>
+                            <li><strong>Continuous Optimization:</strong> Constantly searches for better opportunities</li>
+                        </ol>
+                        <p style="margin-top: 15px;">Users simply deposit assets into Yearn vaults and earn optimized yields without managing the underlying strategies.</p>
+                    </div>
+                    
+                    <p>Advanced yield strategies require deep understanding of multiple protocols, careful risk management, and constant monitoring. The potential rewards are higher, but so are the risks of liquidation, smart contract failures, and market volatility.</p>
+                </div>
+            </div>
+            
+            <!-- Derivatives Panel -->
+            <div class="content-panel" id="derivatives">
+                <h2 class="panel-title"><i class="fas fa-chart-bar"></i> DeFi Derivatives</h2>
+                <div class="panel-content">
+                    <p>Derivatives are financial instruments whose value derives from an underlying asset. In DeFi, derivatives enable sophisticated trading strategies like leverage, hedging, and speculation without intermediaries.</p>
+                    
+                    <div class="derivatives-grid">
+                        <div class="derivative-card perpetual">
+                            <div class="derivative-header">
+                                <div class="derivative-icon"><i class="fas fa-infinity"></i></div>
+                                <div>
+                                    <h3 class="derivative-name">Perpetuals</h3>
+                                    <div style="font-size: 0.9rem; color: #ff4d8d;">Perps</div>
+                                </div>
+                            </div>
+                            
+                            <p class="derivative-type">Futures contracts without expiration dates</p>
+                            
+                            <div class="derivative-details">
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Funding Rate</div>
+                                    <div class="detail-value">Variable</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Leverage</div>
+                                    <div class="detail-value">Up to 100x</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Examples</div>
+                                    <div class="detail-value">dYdX, Perpetual Protocol</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Risk Level</div>
+                                    <div class="detail-value">Very High</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 20px; font-size: 0.9rem; color: #94a3b8;">
+                                <strong>Use Case:</strong> Speculative trading, hedging portfolio risk
+                            </div>
+                        </div>
+                        
+                        <div class="derivative-card options">
+                            <div class="derivative-header">
+                                <div class="derivative-icon"><i class="fas fa-toggle-on"></i></div>
+                                <div>
+                                    <h3 class="derivative-name">Options</h3>
+                                    <div style="font-size: 0.9rem; color: #00f0ff;">Calls & Puts</div>
+                                </div>
+                            </div>
+                            
+                            <p class="derivative-type">Right to buy/sell assets at predetermined price</p>
+                            
+                            <div class="derivative-details">
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Premium</div>
+                                    <div class="detail-value">Option Price</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Strike Price</div>
+                                    <div class="detail-value">Fixed</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Examples</div>
+                                    <div class="detail-value">Opyn, Hegic, Lyra</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Risk Level</div>
+                                    <div class="detail-value">High</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 20px; font-size: 0.9rem; color: #94a3b8;">
+                                <strong>Use Case:</strong> Portfolio protection, income generation, speculation
+                            </div>
+                        </div>
+                        
+                        <div class="derivative-card synthetics">
+                            <div class="derivative-header">
+                                <div class="derivative-icon"><i class="fas fa-cube"></i></div>
+                                <div>
+                                    <h3 class="derivative-name">Synthetics</h3>
+                                    <div style="font-size: 0.9rem; color: #ffd700;">Synths</div>
+                                </div>
+                            </div>
+                            
+                            <p class="derivative-type">Tokenized derivatives tracking asset prices</p>
+                            
+                            <div class="derivative-details">
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Collateral</div>
+                                    <div class="detail-value">Over-collateralized</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Assets</div>
+                                    <div class="detail-value">Any (stocks, commodities)</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Examples</div>
+                                    <div class="detail-value">Synthetix, Mirror</div>
+                                </div>
+                                <div class="derivative-detail">
+                                    <div class="detail-label">Risk Level</div>
+                                    <div class="detail-value">Medium-High</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 20px; font-size: 0.9rem; color: #94a3b8;">
+                                <strong>Use Case:</strong> Access to traditional assets, diversified exposure
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 77, 141, 0.1); border-radius: 12px; border-left: 4px solid #ff4d8d;">
+                        <h4 style="color: #ff4d8d; margin-bottom: 15px;">How Perpetual Contracts Work</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00f0ff;">Funding Rate Mechanism</h5>
+                                <p>When perpetual price > spot price, longs pay shorts. When perpetual price < spot price, shorts pay longs. This keeps the perpetual price tethered to the spot price.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ffd700;">Margin & Leverage</h5>
+                                <p>Traders post collateral (margin) to open positions. Leverage amplifies both gains and losses. A 10x leverage means a 10% price move results in 100% gain or loss of collateral.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ff4d8d;">Liquidation</h5>
+                                <p>If a position's value drops below maintenance margin, it gets liquidated automatically. Liquidation fees are typically charged, and remaining collateral may be lost.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(0, 240, 255, 0.1); border-radius: 12px; border-left: 4px solid #00f0ff;">
+                        <h4 style="color: #00f0ff; margin-bottom: 15px;">Options: Call vs Put Example</h4>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(0, 240, 255, 0.1); padding: 20px; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.3);">
+                                <h5 style="color: #00ff88;">Call Option</h5>
+                                <p><strong>Right to BUY</strong> ETH at $3,000 before expiration.</p>
+                                <p>You pay a premium of $200 for this option.</p>
+                                <p>If ETH rises to $4,000: You exercise option, buy at $3,000, sell at $4,000 = $800 profit ($1,000 - $200 premium).</p>
+                                <p>If ETH stays below $3,000: Option expires worthless, you lose the $200 premium.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 77, 141, 0.1); padding: 20px; border-radius: 8px; border: 1px solid rgba(255, 77, 141, 0.3);">
+                                <h5 style="color: #ff4d8d;">Put Option</h5>
+                                <p><strong>Right to SELL</strong> ETH at $3,000 before expiration.</p>
+                                <p>You pay a premium of $150 for this option.</p>
+                                <p>If ETH drops to $2,000: You buy ETH at $2,000, exercise option to sell at $3,000 = $850 profit ($1,000 - $150 premium).</p>
+                                <p>If ETH stays above $3,000: Option expires worthless, you lose the $150 premium.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>DeFi derivatives democratize access to sophisticated financial instruments but come with substantial risks. Understanding Greeks (Delta, Gamma, Theta, Vega) and proper risk management is essential before trading derivatives.</p>
+                </div>
+            </div>
+            
+            <!-- Leverage Panel -->
+            <div class="content-panel" id="leverage">
+                <h2 class="panel-title"><i class="fas fa-balance-scale-right"></i> Leverage & Multipliers</h2>
+                <div class="panel-content">
+                    <p>Leverage amplifies exposure to price movements using borrowed capital. While it can multiply gains, it also multiplies losses and introduces liquidation risk. Understanding leverage mechanics is crucial for advanced DeFi strategies.</p>
+                    
+                    <div class="leverage-viz">
+                        <h3 style="color: #00f0ff; margin-bottom: 30px; text-align: center;">Leverage Multiplier Effects</h3>
+                        
+                        <div class="leverage-container">
+                            <div class="leverage-levels">
+                                <div class="leverage-level level-1x">
+                                    <div class="leverage-multiplier">1x</div>
+                                    <div>No Leverage</div>
+                                    <div style="margin-top: 10px; font-size: 0.9rem; color: #cbd5e1;">
+                                        $10,000 Capital<br>
+                                        $10,000 Exposure
+                                    </div>
+                                    <div style="margin-top: 15px;">
+                                        <div>10% Gain → <span class="profit">+$1,000</span></div>
+                                        <div>10% Loss → <span class="loss">-$1,000</span></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="leverage-level level-3x">
+                                    <div class="leverage-multiplier">3x</div>
+                                    <div>Moderate Leverage</div>
+                                    <div style="margin-top: 10px; font-size: 0.9rem; color: #cbd5e1;">
+                                        $10,000 Capital<br>
+                                        $30,000 Exposure
+                                    </div>
+                                    <div style="margin-top: 15px;">
+                                        <div>10% Gain → <span class="profit">+$3,000</span></div>
+                                        <div>10% Loss → <span class="loss">-$3,000</span></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="leverage-level level-5x">
+                                    <div class="leverage-multiplier">5x</div>
+                                    <div>High Leverage</div>
+                                    <div style="margin-top: 10px; font-size: 0.9rem; color: #cbd5e1;">
+                                        $10,000 Capital<br>
+                                        $50,000 Exposure
+                                    </div>
+                                    <div style="margin-top: 15px;">
+                                        <div>10% Gain → <span class="profit">+$5,000</span></div>
+                                        <div>10% Loss → <span class="loss">-$5,000</span></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="leverage-level level-10x">
+                                    <div class="leverage-multiplier">10x</div>
+                                    <div>Extreme Leverage</div>
+                                    <div style="margin-top: 10px; font-size: 0.9rem; color: #cbd5e1;">
+                                        $10,000 Capital<br>
+                                        $100,000 Exposure
+                                    </div>
+                                    <div style="margin-top: 15px;">
+                                        <div>10% Gain → <span class="profit">+$10,000</span></div>
+                                        <div>10% Loss → <span class="loss">Liquidation</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="leverage-warning">
+                                <h4 style="color: #ff4d8d; margin-bottom: 10px;">⚠️ Critical Consideration: Liquidation Price</h4>
+                                <p>With 5x leverage, a 20% adverse price move can liquidate your entire position. With 10x leverage, only 10% move is needed. Liquidation typically involves fees and potential loss of collateral.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 215, 0, 0.1); border-radius: 12px; border-left: 4px solid #ffd700;">
+                        <h4 style="color: #ffd700; margin-bottom: 15px;">Leverage Implementation Methods</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ff4d8d;">Lending Protocols</h5>
+                                <p>Borrow assets against collateral, then use borrowed assets for trading or farming. Example: Deposit ETH on AAVE, borrow USDC, trade for more ETH.</p>
+                                <div style="font-size: 0.9rem; color: #ffaaaa; margin-top: 10px;">
+                                    <strong>Max Leverage:</strong> Typically 3-5x (depending on LTV)
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00f0ff;">Perpetual Contracts</h5>
+                                <p>Trade derivatives with built-in leverage. Example: Open 10x long ETH position on dYdX with $1,000, controlling $10,000 of ETH exposure.</p>
+                                <div style="font-size: 0.9rem; color: #a0ffff; margin-top: 10px;">
+                                    <strong>Max Leverage:</strong> Up to 100x on some platforms
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #9d4edd;">Leveraged Tokens</h5>
+                                <p>Hold tokens that automatically maintain leveraged exposure. Example: 3x ETH bull token that tries to deliver 3x daily ETH returns.</p>
+                                <div style="font-size: 0.9rem; color: #d4a0ff; margin-top: 10px;">
+                                    <strong>Max Leverage:</strong> Typically 2-4x
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 77, 141, 0.1); border-radius: 12px; border-left: 4px solid #ff4d8d;">
+                        <h4 style="color: #ff4d8d; margin-bottom: 15px;">Leverage Risk Management Checklist</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00ff88; font-size: 1.2rem;">✓</div>
+                                <div>Calculate liquidation price before entering position</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00ff88; font-size: 1.2rem;">✓</div>
+                                <div>Use stop-loss orders when available</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00ff88; font-size: 1.2rem;">✓</div>
+                                <div>Monitor positions actively during volatility</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00ff88; font-size: 1.2rem;">✓</div>
+                                <div>Never use maximum available leverage</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00ff88; font-size: 1.2rem;">✓</div>
+                                <div>Have contingency plan for margin calls</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00ff88; font-size: 1.2rem;">✓</div>
+                                <div>Diversify across strategies, not just leverage</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>Leverage is a powerful tool that can accelerate both profits and losses. Successful leverage users maintain strict risk management, understand the mathematical implications of their positions, and never risk more than they can afford to lose.</p>
+                </div>
+            </div>
+            
+            <!-- Risks Panel -->
+            <div class="content-panel" id="risks">
+                <h2 class="panel-title"><i class="fas fa-radiation"></i> Comprehensive Risk Framework</h2>
+                <div class="panel-content">
+                    <p>Advanced DeFi participation requires a systematic approach to risk management. Beyond basic smart contract risk, sophisticated participants must understand and mitigate multiple risk vectors simultaneously.</p>
+                    
+                    <div class="risk-matrix">
+                        <h3 style="color: #ff4d8d; margin-bottom: 30px; text-align: center;">DeFi Risk Matrix</h3>
+                        
+                        <div class="matrix-container">
+                            <div class="risk-category contract">
+                                <h4 class="risk-category-title"><i class="fas fa-file-contract"></i> Smart Contract Risk</h4>
+                                <p>Vulnerabilities in protocol code, even after audits.</p>
+                                <ul class="risk-examples">
+                                    <li>Reentrancy attacks</li>
+                                    <li>Logic errors</li>
+                                    <li>Upgradeability risks</li>
+                                    <li>Admin key compromises</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="risk-category oracle">
+                                <h4 class="risk-category-title"><i class="fas fa-database"></i> Oracle Risk</h4>
+                                <p>Price feed manipulation or failure.</p>
+                                <ul class="risk-examples">
+                                    <li>Flash loan attacks on oracles</li>
+                                    <li>Stale price data</li>
+                                    <li>Single point of failure</li>
+                                    <li>Manipulated liquidations</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="risk-category liquidity">
+                                <h4 class="risk-category-title"><i class="fas fa-water"></i> Liquidity Risk</h4>
+                                <p>Inability to enter/exit positions at fair prices.</p>
+                                <ul class="risk-examples">
+                                    <li>Impermanent loss</li>
+                                    <li>Slippage on large trades</li>
+                                    <li>Protocol exit liquidity</li>
+                                    <li>Pool concentration</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="risk-category systemic">
+                                <h4 class="risk-category-title"><i class="fas fa-sitemap"></i> Systemic Risk</h4>
+                                <p>Interconnected failures across protocols.</p>
+                                <ul class="risk-examples">
+                                    <li>Contagion from other protocols</li>
+                                    <li>Gas price spikes</li>
+                                    <li>Blockchain consensus failures</li>
+                                    <li>Regulatory crackdowns</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(0, 240, 255, 0.1); border-radius: 12px; border-left: 4px solid #00f0ff;">
+                        <h4 style="color: #00f0ff; margin-bottom: 15px;">Quantitative Risk Assessment Framework</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ff4d8d;">1. Protocol Due Diligence</h5>
+                                <ul style="padding-left: 20px; margin-top: 10px;">
+                                    <li>Audit history & team reputation</li>
+                                    <li>Time live without incidents</li>
+                                    <li>TVL trend and composition</li>
+                                    <li>Governance token distribution</li>
+                                    <li>Bug bounty program scope</li>
+                                </ul>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00f0ff;">2. Technical Analysis</h5>
+                                <ul style="padding-left: 20px; margin-top: 10px;">
+                                    <li>Code complexity and upgradeability</li>
+                                    <li>Oracle security (decentralization)</li>
+                                    <li>Economic model sustainability</li>
+                                    <li>Integration risks with other protocols</li>
+                                    <li>Emergency shutdown mechanisms</li>
+                                </ul>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ffd700;">3. Financial Risk Metrics</h5>
+                                <ul style="padding-left: 20px; margin-top: 10px;">
+                                    <li>Value at Risk (VaR) calculations</li>
+                                    <li>Maximum drawdown analysis</li>
+                                    <li>Correlation with other assets</li>
+                                    <li>Liquidity depth analysis</li>
+                                    <li>Stress testing scenarios</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(157, 78, 221, 0.1); border-radius: 12px; border-left: 4px solid #9d4edd;">
+                        <h4 style="color: #9d4edd; margin-bottom: 15px;">Real-World Risk Scenario: The Cascade Effect</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                            <div style="text-align: center;">
+                                <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 77, 141, 0.2); display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 1.2rem; color: #ff4d8d; font-weight: bold;">
+                                    1
+                                </div>
+                                <h5 style="color: #ff4d8d;">Market Crash</h5>
+                                <p>ETH price drops 30% in 24 hours during market panic.</p>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 215, 0, 0.2); display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 1.2rem; color: #ffd700; font-weight: bold;">
+                                    2
+                                </div>
+                                <h5 style="color: #ffd700;">Mass Liquidations</h5>
+                                <p>Over-leveraged positions get liquidated, creating selling pressure.</p>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(0, 240, 255, 0.2); display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 1.2rem; color: #00f0ff; font-weight: bold;">
+                                    3
+                                </div>
+                                <h5 style="color: #00f0ff;">Oracle Issues</h5>
+                                <p>Price feeds lag or show discrepancies, causing unfair liquidations.</p>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(157, 78, 221, 0.2); display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 1.2rem; color: #9d4edd; font-weight: bold;">
+                                    4
+                                </div>
+                                <h5 style="color: #9d4edd;">Protocol Contagion</h5>
+                                <p>Problems spread to interconnected protocols via shared collateral.</p>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 0, 0, 0.2); display: flex; justify-content: center; align-items: center; margin: 0 auto 10px; font-size: 1.2rem; color: #ff5555; font-weight: bold;">
+                                    5
+                                </div>
+                                <h5 style="color: #ff5555;">Network Congestion</h5>
+                                <p>Gas fees spike, preventing users from managing positions.</p>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 20px; text-align: center; font-style: italic; color: #cbd5e1;">
+                            This cascade happened during the March 2020 crash and May 2021 market correction. Prepared participants had diversified portfolios, conservative leverage, and monitoring systems.
+                        </p>
+                    </div>
+                    
+                    <p>A comprehensive risk framework transforms risk from an abstract concern into a measurable, manageable factor. Advanced DeFi participants don't avoid risk—they understand it, quantify it, and build systems to manage it effectively across their entire portfolio.</p>
+                </div>
+            </div>
+            
+            <!-- NFT-Fi Panel -->
+            <div class="content-panel" id="nftfi">
+                <h2 class="panel-title"><i class="fas fa-palette"></i> NFT-Fi: DeFi + NFTs</h2>
+                <div class="panel-content">
+                    <p>NFT-Fi represents the convergence of NFTs and DeFi, creating financial primitives for non-fungible assets. This emerging sector unlocks liquidity for NFT holders and creates new investment opportunities.</p>
+                    
+                    <div class="nftfi-grid">
+                        <div class="nftfi-card">
+                            <div class="nftfi-header">
+                                <div class="nftfi-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                                <div class="nftfi-name">NFT Lending</div>
+                            </div>
+                            
+                            <p class="nftfi-description">Use NFTs as collateral to borrow liquidity without selling your assets. Perfect for NFT collectors needing short-term capital.</p>
+                            
+                            <div class="nftfi-examples">
+                                <div class="nftfi-example">
+                                    <div class="example-title">Loan-to-Value</div>
+                                    <div class="example-data">20-50%</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">APR</div>
+                                    <div class="example-data">15-40%</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">Duration</div>
+                                    <div class="example-data">30-90 days</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">Examples</div>
+                                    <div class="example-data">NFTfi, Arcade</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nftfi-card">
+                            <div class="nftfi-header">
+                                <div class="nftfi-icon"><i class="fas fa-chart-pie"></i></div>
+                                <div class="nftfi-name">NFT Fractionalization</div>
+                            </div>
+                            
+                            <p class="nftfi-description">Split high-value NFTs into fungible tokens, allowing multiple investors to own shares of premium digital assets.</p>
+                            
+                            <div class="nftfi-examples">
+                                <div class="nftfi-example">
+                                    <div class="example-title">Minimum Investment</div>
+                                    <div class="example-data">$10-$100</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">Trading</div>
+                                    <div class="example-data">DEX Listings</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">Redemption</div>
+                                    <div class="example-data">51-100% tokens</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">Examples</div>
+                                    <div class="example-data">Fractional, NIFTEX</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nftfi-card">
+                            <div class="nftfi-header">
+                                <div class="nftfi-icon"><i class="fas fa-shopping-cart"></i></div>
+                                <div class="nftfi-name">NFT Derivatives</div>
+                            </div>
+                            
+                            <p class="nftfi-description">Financial instruments based on NFT collections, including index tokens, options, and perpetual futures.</p>
+                            
+                            <div class="nftfi-examples">
+                                <div class="nftfi-example">
+                                    <div class="example-title">Index Tokens</div>
+                                    <div class="example-data">NFTX, Index Coop</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">Options</div>
+                                    <div class="example-data">Coming soon</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">Perpetuals</div>
+                                    <div class="example-data">In development</div>
+                                </div>
+                                <div class="nftfi-example">
+                                    <div class="example-title">Examples</div>
+                                    <div class="example-data">NFT20, NFTX</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(157, 78, 221, 0.1); border-radius: 12px; border-left: 4px solid #9d4edd;">
+                        <h4 style="color: #9d4edd; margin-bottom: 15px;">NFT Lending: How It Works</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ff4d8d;">1. Collateral Lock</h5>
+                                <p>NFT owner locks their NFT (e.g., CryptoPunk) in a smart contract as collateral for a loan.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00f0ff;">2. Loan Terms</h5>
+                                <p>Lender offers loan amount (typically 20-50% of NFT value), interest rate (APR), and duration (30-90 days).</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ffd700;">3. Funds Disbursement</h5>
+                                <p>If borrower accepts terms, they receive funds (usually stablecoins) and NFT is locked until repayment.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #9d4edd;">4. Repayment or Liquidation</h5>
+                                <p>Borrower repays loan + interest to retrieve NFT. If they default, lender receives the NFT.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 77, 141, 0.1); border-radius: 12px; border-left: 4px solid #ff4d8d;">
+                        <h4 style="color: #ff4d8d; margin-bottom: 15px;">Unique NFT-Fi Risks</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                            <div>
+                                <h5 style="color: #ff4d8d;">Valuation Risk</h5>
+                                <p>NFT prices are subjective and volatile. Floor prices can collapse quickly if collection falls out of favor.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #00f0ff;">Liquidity Risk</h5>
+                                <p>Some NFTs have thin markets. Liquidating collateral during default may be difficult or require discounts.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #ffd700;">Fraud Risk</h5>
+                                <p>Fake or stolen NFTs, wash trading to inflate prices, and other fraudulent activities.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #9d4edd;">Intellectual Property</h5>
+                                <p>Unclear rights associated with NFT ownership can create legal complications.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>NFT-Fi represents a significant evolution in digital asset finance, creating bridges between the worlds of unique collectibles and programmable finance. As the sector matures, expect more sophisticated financial instruments and deeper integration with traditional DeFi protocols.</p>
+                </div>
+            </div>
+            
+            <!-- DAO Panel -->
+            <div class="content-panel" id="dao">
+                <h2 class="panel-title"><i class="fas fa-landmark"></i> DAO Treasury Management</h2>
+                <div class="panel-content">
+                    <p>Decentralized Autonomous Organizations (DAOs) collectively manage substantial treasuries, often worth millions or billions. Effective treasury management is critical for DAO sustainability and growth.</p>
+                    
+                    <div class="dao-treasury">
+                        <div class="treasury-side">
+                            <div class="treasury-icon"><i class="fas fa-shield-alt"></i></div>
+                            <h3 class="treasury-title">Treasury Strategies</h3>
+                            <p class="treasury-description">How DAOs manage and grow their assets to fund operations, incentivize participation, and ensure long-term viability.</p>
+                            
+                            <div style="margin: 25px 0;">
+                                <div style="font-size: 1.2rem; color: #00f0ff; margin-bottom: 10px;">Common Approaches:</div>
+                                <ul style="text-align: left; padding-left: 30px;">
+                                    <li>Diversification across stablecoins, blue-chip crypto</li>
+                                    <li>Yield generation via DeFi protocols</li>
+                                    <li>Strategic investments in ecosystem projects</li>
+                                    <li>Liquidity provision for own tokens</li>
+                                    <li>Staking for governance rights</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="treasury-stats">TVL: $10B+ across all DAOs</div>
+                        </div>
+                        
+                        <div class="treasury-side">
+                            <div class="treasury-icon"><i class="fas fa-vote-yea"></i></div>
+                            <h3 class="treasury-title">Protocol-Owned Liquidity</h3>
+                            <p class="treasury-description">DAOs using treasury assets to provide liquidity for their own tokens, creating sustainable ecosystems.</p>
+                            
+                            <div style="margin: 25px 0;">
+                                <div style="font-size: 1.2rem; color: #ff4d8d; margin-bottom: 10px;">POL Benefits:</div>
+                                <ul style="text-align: left; padding-left: 30px;">
+                                    <li>Reduces reliance on mercenary capital</li>
+                                    <li>Creates permanent liquidity pools</li>
+                                    <li>Generates fee revenue for treasury</li>
+                                    <li>Improves token price stability</li>
+                                    <li>Aligns incentives with long-term holders</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="treasury-stats" style="background: rgba(255, 77, 141, 0.15);">Olympus DAO: $700M+ POL</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(0, 240, 255, 0.1); border-radius: 12px; border-left: 4px solid #00f0ff;">
+                        <h4 style="color: #00f0ff; margin-bottom: 15px;">DAO Treasury Management Case Study: MakerDAO</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ff4d8d;">Treasury Composition</h5>
+                                <p>MakerDAO's treasury includes stablecoin reserves, ETH, and various other crypto assets worth over $7 billion.</p>
+                                <div style="font-size: 0.9rem; color: #ffaaaa; margin-top: 10px;">
+                                    <strong>Strategy:</strong> Conservative allocation with focus on stability
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00f0ff;">Yield Generation</h5>
+                                <p>Deploys assets to yield-generating protocols while maintaining liquidity for DAI redemptions.</p>
+                                <div style="font-size: 0.9rem; color: #a0ffff; margin-top: 10px;">
+                                    <strong>Examples:</strong> AAVE, Compound, Yearn Finance
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ffd700;">Governance Process</h5>
+                                <p>All treasury decisions go through Maker governance, with proposals, discussions, and MKR token voting.</p>
+                                <div style="font-size: 0.9rem; color: #ffffaa; margin-top: 10px;">
+                                    <strong>Voting:</strong> Weighted by MKR tokens held
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 77, 141, 0.1); border-radius: 12px; border-left: 4px solid #ff4d8d;">
+                        <h4 style="color: #ff4d8d; margin-bottom: 15px;">Treasury Management Challenges</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                            <div>
+                                <h5 style="color: #ff4d8d;">Governance Capture</h5>
+                                <p>Large token holders or coordinated groups may push through proposals that benefit them at community expense.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #00f0ff;">Investment Risk</h5>
+                                <p>Treasury assets deployed to risky protocols could suffer losses, threatening DAO sustainability.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #ffd700;">Liquidity vs Yield</h5>
+                                <p>Balancing the need for liquid assets against the desire for higher yields is challenging.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #9d4edd;">Regulatory Uncertainty</h5>
+                                <p>DAOs exist in regulatory gray areas, creating potential future legal challenges.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>DAO treasury management represents a new paradigm in organizational finance—transparent, community-governed, and operating in internet-native financial systems. Success requires balancing innovation with risk management, transparency with strategic discretion, and short-term needs with long-term vision.</p>
+                </div>
+            </div>
+            
+            <!-- Analytics Panel -->
+            <div class="content-panel" id="analytics">
+                <h2 class="panel-title"><i class="fas fa-chart-network"></i> On-Chain Analytics & MEV</h2>
+                <div class="panel-content">
+                    <p>On-chain analytics tools provide unprecedented transparency into DeFi activity, while MEV (Maximal Extractable Value) represents both an opportunity and a threat in blockchain transaction ordering.</p>
+                    
+                    <div class="analytics-showcase">
+                        <div class="analytics-card">
+                            <div class="analytics-header">
+                                <div class="analytics-icon"><i class="fas fa-database"></i></div>
+                                <div class="analytics-name">Dune Analytics</div>
+                            </div>
+                            
+                            <p class="analytics-description">SQL-based platform for querying, visualizing, and sharing blockchain data. The go-to tool for DeFi research and dashboard creation.</p>
+                            
+                            <ul class="analytics-features">
+                                <li>Free access to raw blockchain data</li>
+                                <li>Community-created dashboards</li>
+                                <li>Real-time metrics tracking</li>
+                                <li>Cross-chain data aggregation</li>
+                                <li>API for custom integrations</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="analytics-card">
+                            <div class="analytics-header">
+                                <div class="analytics-icon"><i class="fas fa-user-secret"></i></div>
+                                <div class="analytics-name">Nansen</div>
+                            </div>
+                            
+                            <p class="analytics-description">On-chain analytics platform with wallet labeling, smart money tracking, and real-time alerts for trading opportunities.</p>
+                            
+                            <ul class="analytics-features">
+                                <li>Smart money wallet tracking</li>
+                                <li>NFT wallet analytics</li>
+                                <li>Token flow analysis</li>
+                                <li>Exchange flow monitoring</li>
+                                <li>Custom alert systems</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="analytics-card">
+                            <div class="analytics-header">
+                                <div class="analytics-icon"><i class="fas fa-robot"></i></div>
+                                <div class="analytics-name">MEV & Flashbots</div>
+                            </div>
+                            
+                            <p class="analytics-description">Study of transaction ordering value extraction and solutions for fairer, more transparent block production.</p>
+                            
+                            <ul class="analytics-features">
+                                <li>Front-running detection</li>
+                                <li>Arbitrage opportunity analysis</li>
+                                <li>Flashbot bundle monitoring</li>
+                                <li>MEV extraction strategies</li>
+                                <li>Privacy-preserving solutions</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 215, 0, 0.1); border-radius: 12px; border-left: 4px solid #ffd700;">
+                        <h4 style="color: #ffd700; margin-bottom: 15px;">Understanding MEV (Maximal Extractable Value)</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #ff4d8d;">What is MEV?</h5>
+                                <p>The maximum value that can be extracted from block production in excess of the standard block reward and gas fees, by including, excluding, or reordering transactions.</p>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #00f0ff;">Common MEV Strategies</h5>
+                                <ul style="padding-left: 20px; margin-top: 10px;">
+                                    <li>Arbitrage between DEXs</li>
+                                    <li>Liquidation extraction</li>
+                                    <li>Front-running profitable trades</li>
+                                    <li>Sandwich attacks</li>
+                                    <li>Time-bandit attacks</li>
+                                </ul>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #9d4edd;">MEV Impact on Users</h5>
+                                <p>MEV extracts value from regular users through higher slippage, failed transactions, and worse trade execution. Estimates suggest MEV extracts billions annually from DeFi users.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(0, 240, 255, 0.1); border-radius: 12px; border-left: 4px solid #00f0ff;">
+                        <h4 style="color: #00f0ff; margin-bottom: 15px;">Advanced Analytics Use Cases</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                            <div>
+                                <h5 style="color: #ff4d8d;">Protocol Health Monitoring</h5>
+                                <p>Track TVL trends, user growth, fee generation, and concentration risks across multiple protocols.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #00f0ff;">Wallet Profiling</h5>
+                                <p>Identify smart money wallets, track institutional movements, and follow successful traders.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #ffd700;">Risk Assessment</h5>
+                                <p>Monitor collateralization ratios, liquidation risks, and protocol dependencies in real-time.</p>
+                            </div>
+                            <div>
+                                <h5 style="color: #9d4edd;">Alpha Generation</h5>
+                                <p>Discover new protocols early, identify mispricings, and track whale movements for trading signals.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(255, 77, 141, 0.1); border-radius: 12px; border-left: 4px solid #ff4d8d;">
+                        <h4 style="color: #ff4d8d; margin-bottom: 15px;">Protecting Against MEV</h4>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00f0ff; font-size: 1.2rem;">✓</div>
+                                <div>Use DEX aggregators (1inch, Matcha) that route through private mempools</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00f0ff; font-size: 1.2rem;">✓</div>
+                                <div>Set conservative slippage limits (1% or less for stablecoin pairs)</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00f0ff; font-size: 1.2rem;">✓</div>
+                                <div>Use Flashbots RPC for sensitive transactions</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00f0ff; font-size: 1.2rem;">✓</div>
+                                <div>Avoid trading during high volatility periods when MEV is most profitable</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00f0ff; font-size: 1.2rem;">✓</div>
+                                <div>Monitor transaction status and cancel if pending too long</div>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <div style="color: #00f0ff; font-size: 1.2rem;">✓</div>
+                                <div>Use limit orders instead of market orders when possible</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>On-chain analytics transforms blockchain transparency from a theoretical feature into a practical competitive advantage. Meanwhile, understanding and mitigating MEV is essential for preserving value in DeFi transactions. Together, they represent the information asymmetry battlefront in decentralized finance.</p>
+                </div>
+            </div>
+            
+            <!-- Next Level Section -->
+            <div class="next-level">
+                <h3><i class="fas fa-arrow-right"></i> Ready for Web3 Sovereignty?</h3>
+                <p>You've now mastered advanced DeFi strategies, derivatives, comprehensive risk management, NFT-Fi, DAO treasuries, and on-chain analytics. You understand the sophisticated interplay between different Web3 components.</p>
+                <p>In <strong>Level 5: Web3 Sovereignty</strong>, we'll explore DAO governance models, regulatory landscapes, privacy technologies, and the future horizons of the decentralized internet.</p>
+                
+                <!-- Navigation Buttons at Bottom -->
+                <div class="nav-center">
+                    <a href="C:\Users\Dell\Downloads\Defi\Defi3.html" class="nav-button prev">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Level 3: Intermediate Strategies</span>
+                    </a>
+                    
+                    <a href="C:\Users\Dell\Downloads\Defi\index.html" class="nav-button home">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="C:\Users\Dell\Downloads\Defi\Defi5.html" class="nav-button next">
+                        <span>Level 5: Web3 Sovereignty</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const outlineItems = document.querySelectorAll('.outline-item');
+        const contentPanels = document.querySelectorAll('.content-panel');
+        
+        // Toggle sidebar collapse/expand
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            
+            // Update menu dots icon
+            const dots = menuToggle.querySelector('.menu-dots');
+            if (sidebar.classList.contains('collapsed')) {
+                dots.textContent = '•••';
+            } else {
+                dots.textContent = '←';
+            }
+        });
+        
+        // Handle outline item clicks
+        outlineItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Get the panel to show
+                const panelId = item.getAttribute('data-panel');
+                
+                // Update active state in outline
+                outlineItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Show the corresponding panel
+                contentPanels.forEach(panel => {
+                    panel.classList.remove('active');
+                    if (panel.id === panelId) {
+                        panel.classList.add('active');
+                    }
+                });
+                
+                // Auto-collapse sidebar on mobile
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.add('collapsed');
+                    menuToggle.querySelector('.menu-dots').textContent = '•••';
+                }
+                
+                // Scroll to top of content
+                document.querySelector('.content').scrollTop = 0;
+            });
+        });
+        
+        // Initialize with first panel active
+        document.querySelector('.outline-item[data-panel="intro"]').click();
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate strategy cards
+            const strategyCards = document.querySelectorAll('.strategy-card');
+            let strategyDelay = 0;
+            strategyCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, strategyDelay);
+                
+                strategyDelay += 200;
+            });
+            
+            // Animate leverage levels
+            const leverageLevels = document.querySelectorAll('.leverage-level');
+            leverageLevels.forEach((level, index) => {
+                setTimeout(() => {
+                    level.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        level.style.transform = 'scale(1)';
+                    }, 300);
+                }, 1000 + (index * 500));
+            });
+            
+            // Add pulsing effect to risk categories
+            const riskCategories = document.querySelectorAll('.risk-category');
+            riskCategories.forEach(category => {
+                setInterval(() => {
+                    const currentOpacity = parseFloat(getComputedStyle(category).borderLeftColor.split(',')[3] || '1');
+                    const newOpacity = currentOpacity === 1 ? '0.5' : '1';
+                    
+                    if (category.classList.contains('contract')) {
+                        category.style.borderLeftColor = `rgba(255, 77, 141, ${newOpacity})`;
+                    } else if (category.classList.contains('oracle')) {
+                        category.style.borderLeftColor = `rgba(0, 240, 255, ${newOpacity})`;
+                    } else if (category.classList.contains('liquidity')) {
+                        category.style.borderLeftColor = `rgba(255, 215, 0, ${newOpacity})`;
+                    } else if (category.classList.contains('systemic')) {
+                        category.style.borderLeftColor = `rgba(157, 78, 221, ${newOpacity})`;
+                    }
+                }, 2000);
+            });
+            
+            // Simulate live data updates for NFT-Fi examples
+            const exampleDatas = document.querySelectorAll('.example-data');
+            setInterval(() => {
+                exampleDatas.forEach(example => {
+                    const text = example.textContent;
+                    if (text.includes('%') && !text.includes('Examples')) {
+                        const currentValue = parseFloat(text);
+                        const change = (Math.random() - 0.5) * 2; // Random change between -1% and +1%
+                        const newValue = Math.max(5, Math.min(60, currentValue + change)).toFixed(1);
+                        example.textContent = newValue + '%';
+                    } else if (text.includes('$') && text.length < 10) {
+                        const currentValue = parseFloat(text.replace('$', '').replace('-', '').replace('+', ''));
+                        const change = (Math.random() - 0.5) * 0.1 * currentValue;
+                        const newValue = (currentValue + change).toFixed(0);
+                        example.textContent = '$' + newValue;
+                    }
+                });
+            }, 5000);
+            
+            // Add scrolling animation to analytics features
+            const analyticsFeatures = document.querySelectorAll('.analytics-features li');
+            analyticsFeatures.forEach((feature, index) => {
+                setTimeout(() => {
+                    feature.style.transform = 'translateX(-10px)';
+                    feature.style.opacity = '0.7';
+                    setTimeout(() => {
+                        feature.style.transform = 'translateX(0)';
+                        feature.style.opacity = '1';
+                    }, 200);
+                }, 1000 + (index * 300));
+            });
+        });
+    </script>
+</body>
+</html>
